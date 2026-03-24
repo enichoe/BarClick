@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BarClick - Iniciar Sesion</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#0a0a0a',
+                        surface: '#141414',
+                        card: '#1a1a1a',
+                        border: '#2a2a2a',
+                        muted: '#6b6b6b',
+                        fg: '#f5f5f5',
+                        accent: '#d4af37',
+                        accentDark: '#b8962f',
+                        success: '#22c55e',
+                        warning: '#f59e0b',
+                        danger: '#ef4444'
+                    },
+                    fontFamily: {
+                        display: ['Playfair Display', 'serif'],
+                        sans: ['DM Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-bg min-h-screen overflow-x-hidden">
+    <!-- Background Effects -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="orb w-96 h-96 bg-accent top-[-10%] left-[-10%] animate-float"></div>
+        <div class="orb w-80 h-80 bg-accent bottom-[-10%] right-[-10%] animate-float" style="animation-delay: -3s;"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#0a0a0a_70%)]"></div>
+        <div class="absolute inset-0 bg-pattern"></div>
+    </div>
+
+    <div class="relative min-h-screen flex items-center justify-center p-4 md:p-8">
+        <div class="w-full max-w-md">
+            <!-- Logo -->
+            <div class="text-center mb-8 opacity-0 animate-fade-in-up">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-card border border-border mb-4 animate-pulse-glow">
+                    <svg class="w-10 h-10 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M8 21h8m-4-4v4m-5-8l2-9h6l2 9M5 9h14a2 2 0 012 2v2a7 7 0 01-14 0v-2a2 2 0 012-2z" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h1 class="text-4xl font-display font-bold gold-gradient">BarClick</h1>
+                <p class="text-muted mt-2 text-sm">Gestión inteligente de pedidos para eventos</p>
+            </div>
+
+            <!-- Card -->
+            <div class="glass rounded-3xl border border-border p-8 opacity-0 animate-fade-in-up delay-100">
+                <!-- Tabs -->
+                <div class="relative flex mb-8 p-1 bg-surface rounded-xl">
+                    <div id="tabIndicator" class="tab-indicator absolute top-1 bottom-1 w-[calc(50%-4px)] bg-card rounded-lg border border-border"></div>
+                    <button id="tabLogin" onclick="switchTab('login')" class="relative z-10 flex-1 py-3 text-sm font-semibold text-fg transition-colors">Iniciar Sesion</button>
+                    <button id="tabRegister" onclick="switchTab('register')" class="relative z-10 flex-1 py-3 text-sm font-semibold text-muted transition-colors">Registrar Empresa</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="space-y-5">
+                    <div class="opacity-0 animate-fade-in-up delay-200">
+                        <label class="block text-sm font-medium text-fg mb-2">Email</label>
+                        <input type="email" name="email" required class="input" placeholder="tu@email.com">
+                    </div>
+                    
+                    <div class="opacity-0 animate-fade-in-up delay-300">
+                        <label class="block text-sm font-medium text-fg mb-2">Contrasena</label>
+                        <div class="relative">
+                            <input type="password" name="password" required id="loginPassword" class="input pr-12" placeholder="Tu contrasena">
+                            <button type="button" onclick="togglePassword('loginPassword')" class="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-fg transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="opacity-0 animate-fade-in-up delay-400">
+                        <button type="submit" id="loginBtn" class="btn btn-primary w-full py-4 text-base">
+                            <span class="flex items-center justify-center gap-2">
+                                <span>Iniciar Sesion</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Register Form -->
+                <form id="registerForm" class="space-y-5 hidden">
+                    <div class="opacity-0 animate-fade-in-up delay-200">
+                        <label class="block text-sm font-medium text-fg mb-2">Nombre completo</label>
+                        <input type="text" name="fullName" required class="input" placeholder="Juan Perez">
+                    </div>
+                    
+                    <div class="opacity-0 animate-fade-in-up delay-200">
+                        <label class="block text-sm font-medium text-fg mb-2">Nombre de la empresa</label>
+                        <input type="text" name="companyName" required class="input" placeholder="Bar Premium Events">
+                    </div>
+                    
+                    <div class="opacity-0 animate-fade-in-up delay-300">
+                        <label class="block text-sm font-medium text-fg mb-2">Email</label>
+                        <input type="email" name="email" required class="input" placeholder="tu@empresa.com">
+                    </div>
+                    
+                    <div class="opacity-0 animate-fade-in-up delay-300">
+                        <label class="block text-sm font-medium text-fg mb-2">Contrasena</label>
+                        <div class="relative">
+                            <input type="password" name="password" required id="registerPassword" minlength="6" class="input pr-12" placeholder="Minimo 6 caracteres">
+                            <button type="button" onclick="togglePassword('registerPassword')" class="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-fg transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="opacity-0 animate-fade-in-up delay-400">
+                        <button type="submit" id="registerBtn" class="btn btn-primary w-full py-4 text-base">
+                            <span class="flex items-center justify-center gap-2">
+                                <span>Crear Cuenta</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Error/Success Messages -->
+                <div id="authMessage" class="mt-4 hidden">
+                    <div class="p-4 rounded-xl text-sm"></div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <p class="text-center text-muted text-xs mt-6 opacity-0 animate-fade-in-up delay-400">
+                Al continuar, aceptas nuestros terminos de servicio y politica de privacidad
+            </p>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="text-center">
+            <div class="spinner spinner-lg mx-auto mb-4"></div>
+            <p class="text-fg font-medium" id="loadingText">Cargando...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabaseClient.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
