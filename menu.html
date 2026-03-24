@@ -26,70 +26,24 @@
     </script>
     <style>
         * { font-family: 'DM Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
         .gold-gradient {
             background: linear-gradient(135deg, #d4af37 0%, #f4e4a6 50%, #d4af37 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
-        .glass {
-            background: rgba(26, 26, 26, 0.95);
-            backdrop-filter: blur(20px);
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-        
-        .slide-up {
-            animation: slideUp 0.3s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        .bebida-card {
-            transition: transform 0.2s ease;
-        }
-        
-        .bebida-card:active {
-            transform: scale(0.98);
-        }
-        
-        .cart-badge {
-            transition: transform 0.2s ease;
-        }
-        
-        .cart-badge.bounce {
-            animation: bounce 0.3s ease;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-        }
-        
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #d4af37;
-        }
-        
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        .glass { background: rgba(26, 26, 26, 0.95); backdrop-filter: blur(20px); }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .slide-up { animation: slideUp 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        .bebida-card { transition: transform 0.2s ease; }
+        .bebida-card:active { transform: scale(0.98); }
+        .cart-badge { transition: transform 0.2s ease; }
+        .cart-badge.bounce { animation: bounce 0.3s ease; }
+        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+        input:focus, textarea:focus { outline: none; border-color: #d4af37; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-bg min-h-screen pb-24">
@@ -98,7 +52,7 @@
         <div class="px-4 py-4">
             <div class="flex items-center justify-between">
                 <div>
-                                        <h1 id="barName" class="text-lg font-bold gold-gradient">BarClick</h1>
+                    <h1 id="barName" class="text-lg font-bold gold-gradient">BarClick</h1>
                     <p id="eventoName" class="text-sm text-muted">Cargando evento...</p>
                 </div>
                 <button onclick="toggleCart()" class="relative p-2 text-fg">
@@ -112,24 +66,13 @@
         
         <!-- Category Filter -->
         <div class="px-4 pb-3 overflow-x-auto hide-scrollbar">
-            <div id="categoryFilter" class="flex gap-2">
-                <button onclick="filterCategory('')" class="category-btn active px-4 py-2 bg-accent text-bg rounded-full text-sm font-medium whitespace-nowrap" data-category="">
-                    Todos
-                </button>
-            </div>
+            <div id="categoryFilter" class="flex gap-2"></div>
         </div>
     </header>
 
     <!-- Drinks Grid -->
     <main class="p-4">
-        <div id="bebidasGrid" class="grid grid-cols-2 gap-3">
-            <!-- Loading skeleton -->
-            <div class="aspect-square bg-card rounded-2xl animate-pulse"></div>
-            <div class="aspect-square bg-card rounded-2xl animate-pulse"></div>
-            <div class="aspect-square bg-card rounded-2xl animate-pulse"></div>
-            <div class="aspect-square bg-card rounded-2xl animate-pulse"></div>
-        </div>
-        
+        <div id="bebidasGrid" class="grid grid-cols-2 gap-3"></div>
         <div id="emptyState" class="hidden text-center py-12">
             <svg class="w-16 h-16 mx-auto text-muted mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -147,9 +90,7 @@
                 <h2 class="text-xl font-bold text-fg">Tu Pedido</h2>
             </div>
             
-            <div id="cartItems" class="p-4 overflow-y-auto max-h-[40vh] space-y-3">
-                <p class="text-muted text-center py-4">El carrito esta vacio</p>
-            </div>
+            <div id="cartItems" class="p-4 overflow-y-auto max-h-[40vh] space-y-3"></div>
             
             <div class="p-4 border-t border-border">
                 <form id="pedidoForm" onsubmit="submitPedido(event)" class="space-y-3">
@@ -188,432 +129,9 @@
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        // Supabase config
-        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-        let supabase = null;
-        if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        }
-        const DEMO_MODE = !supabase;
-
-        // State
-        let currentEvento = null;
-        let currentEmpresa = null;
-        let bebidas = [];
-        let cart = [];
-        let currentCategory = '';
-
-        // Get evento code from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const eventoCode = urlParams.get('evento');
-
-        // Init
-        document.addEventListener('DOMContentLoaded', async () => {
-            if (!eventoCode) {
-                showError('Codigo de evento no valido');
-                return;
-            }
-            
-            await loadEvento();
-        });
-
-        async function loadEvento() {
-            if (DEMO_MODE) {
-                loadDemoData();
-                return;
-            }
-
-            // Load from Supabase
-            const { data: evento, error: eventoError } = await supabase
-                .from('eventos')
-                .select('*, empresas(*)')
-                .eq('codigo_qr', eventoCode)
-                .eq('activo', true)
-                .single();
-
-            if (eventoError || !evento) {
-                showError('Evento no encontrado');
-                return;
-            }
-
-            currentEvento = evento;
-            currentEmpresa = evento.empresas;
-
-            document.getElementById('barName').textContent = currentEmpresa?.nombre || 'BarClick';
-            document.getElementById('eventoName').textContent = evento.nombre;
-
-            // Load bebidas for this evento
-            const { data: eventoBebidas } = await supabase
-                .from('evento_bebidas')
-                .select('bebidas(*)')
-                .eq('evento_id', evento.id)
-                .eq('disponible', true);
-
-            bebidas = eventoBebidas?.map(eb => eb.bebidas).filter(b => b.activo) || [];
-            
-            renderBebidas();
-            renderCategories();
-            hideLoading();
-        }
-
-        function loadDemoData() {
-            currentEmpresa = { nombre: 'Bar Premium' };
-            currentEvento = { id: 'demo-event', nombre: 'BODA DE ERNESTO Y BLANCA' };
-
-            document.getElementById('barName').textContent = currentEmpresa.nombre;
-            document.getElementById('eventoName').textContent = currentEvento.nombre;
-
-            bebidas = [
-                {
-                    id: 'b1',
-                    nombre: 'Mojito Clasico',
-                    descripcion: 'Ron blanco, menta fresca, lima, azucar y soda',
-                    categoria: 'cocteles',
-                    imagen_url: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop'
-                },
-                {
-                    id: 'b2',
-                    nombre: 'Margarita',
-                    descripcion: 'Tequila, triple sec, jugo de lima y sal',
-                    categoria: 'cocteles',
-                    imagen_url: 'https://images.unsplash.com/photo-1612515323158-38c57851a59c?w=400&h=400&fit=crop'
-                },
-                {
-                    id: 'b3',
-                    nombre: 'Pina Colada',
-                    descripcion: 'Ron, crema de coco y jugo de pina',
-                    categoria: 'cocteles',
-                    imagen_url: 'https://images.unsplash.com/photo-1586500036706-41963de24d8b?w=400&h=400&fit=crop'
-                },
-                {
-                    id: 'b4',
-                    nombre: 'Cerveza Corona',
-                    descripcion: 'Cerveza lager mexicana bien fria',
-                    categoria: 'cervezas',
-                    imagen_url: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=400&h=400&fit=crop'
-                },
-                {
-                    id: 'b5',
-                    nombre: 'Cerveza Pacifico',
-                    descripcion: 'Cerveza tipo pilsner',
-                    categoria: 'cervezas',
-                    imagen_url: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=400&h=400&fit=crop'
-                },
-                {
-                    id: 'b6',
-                    nombre: 'Mojito Sin Alcohol',
-                    descripcion: 'Menta, lima, azucar y soda',
-                    categoria: 'sin_alcohol',
-                    imagen_url: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop'
-                },
-                {
-                    id: 'b7',
-                    nombre: 'Tequila Shot',
-                    descripcion: 'Tequila blanco con limon y sal',
-                    categoria: 'shots',
-                    imagen_url: 'https://images.unsplash.com/photo-1516594798947-e65505dbb29d?w=400&h=400&fit=crop'
-                },
-                {
-                    id: 'b8',
-                    nombre: 'Vino Tinto',
-                    descripcion: 'Copa de vino tinto de la casa',
-                    categoria: 'vinos',
-                    imagen_url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=400&fit=crop'
-                }
-            ];
-
-            renderBebidas();
-            renderCategories();
-            hideLoading();
-        }
-
-        function renderCategories() {
-            const categories = [...new Set(bebidas.map(b => b.categoria).filter(Boolean))];
-            const categoryNames = {
-                'cocteles': 'Cocteles',
-                'cervezas': 'Cervezas',
-                'vinos': 'Vinos',
-                'sin_alcohol': 'Sin Alcohol',
-                'shots': 'Shots'
-            };
-
-            const container = document.getElementById('categoryFilter');
-            container.innerHTML = `
-                <button onclick="filterCategory('')" class="category-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${currentCategory === '' ? 'bg-accent text-bg' : 'bg-surface text-fg border border-border'}" data-category="">
-                    Todos
-                </button>
-                ${categories.map(cat => `
-                    <button onclick="filterCategory('${cat}')" class="category-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${currentCategory === cat ? 'bg-accent text-bg' : 'bg-surface text-fg border border-border'}" data-category="${cat}">
-                        ${categoryNames[cat] || cat}
-                    </button>
-                `).join('')}
-            `;
-        }
-
-        function filterCategory(category) {
-            currentCategory = category;
-            renderCategories();
-            renderBebidas();
-        }
-
-        function renderBebidas() {
-            const filtered = currentCategory 
-                ? bebidas.filter(b => b.categoria === currentCategory)
-                : bebidas;
-
-            const container = document.getElementById('bebidasGrid');
-            const emptyState = document.getElementById('emptyState');
-
-            if (filtered.length === 0) {
-                container.innerHTML = '';
-                emptyState.classList.remove('hidden');
-                return;
-            }
-
-            emptyState.classList.add('hidden');
-            container.innerHTML = filtered.map(bebida => {
-                const inCart = cart.find(c => c.id === bebida.id);
-                return `
-                    <div class="bebida-card bg-card border border-border rounded-2xl overflow-hidden">
-                        <div class="aspect-square relative overflow-hidden bg-surface">
-                            ${bebida.imagen_url 
-                                ? `<img src="${bebida.imagen_url}" alt="${bebida.nombre}" class="w-full h-full object-cover" loading="lazy">`
-                                : `<div class="w-full h-full flex items-center justify-center text-muted">
-                                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                    </svg>
-                                </div>`
-                            }
-                        </div>
-                        <div class="p-3">
-                            <h3 class="font-semibold text-fg text-sm leading-tight">${bebida.nombre}</h3>
-                            <p class="text-xs text-muted mt-1 line-clamp-2">${bebida.descripcion || ''}</p>
-                            
-                            ${inCart 
-                                ? `<div class="flex items-center justify-between mt-3">
-                                    <button onclick="removeFromCart('${bebida.id}')" class="w-10 h-10 bg-surface border border-border rounded-xl text-fg flex items-center justify-center">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
-                                        </svg>
-                                    </button>
-                                    <span class="text-accent font-bold text-lg">${inCart.cantidad}</span>
-                                    <button onclick="addToCart('${bebida.id}')" class="w-10 h-10 bg-accent rounded-xl text-bg flex items-center justify-center">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                                        </svg>
-                                    </button>
-                                </div>`
-                                : `<button onclick="addToCart('${bebida.id}')" class="w-full mt-3 py-2.5 bg-surface border border-accent text-accent rounded-xl text-sm font-semibold hover:bg-accent hover:text-bg transition-colors">
-                                    Agregar
-                                </button>`
-                            }
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function addToCart(bebidaId) {
-            const bebida = bebidas.find(b => b.id === bebidaId);
-            if (!bebida) return;
-
-            const existing = cart.find(c => c.id === bebidaId);
-            if (existing) {
-                existing.cantidad++;
-            } else {
-                cart.push({ ...bebida, cantidad: 1 });
-            }
-
-            updateCartUI();
-            renderBebidas();
-        }
-
-        function removeFromCart(bebidaId) {
-            const existing = cart.find(c => c.id === bebidaId);
-            if (existing) {
-                existing.cantidad--;
-                if (existing.cantidad <= 0) {
-                    cart = cart.filter(c => c.id !== bebidaId);
-                }
-            }
-
-            updateCartUI();
-            renderBebidas();
-        }
-
-        function updateCartUI() {
-            const count = cart.reduce((sum, item) => sum + item.cantidad, 0);
-            const badge = document.getElementById('cartCount');
-            const submitBtn = document.getElementById('submitBtn');
-
-            if (count > 0) {
-                badge.textContent = count;
-                badge.classList.remove('hidden');
-                badge.classList.add('bounce');
-                setTimeout(() => badge.classList.remove('bounce'), 300);
-                submitBtn.disabled = false;
-            } else {
-                badge.classList.add('hidden');
-                submitBtn.disabled = true;
-            }
-
-            renderCartItems();
-        }
-
-        function renderCartItems() {
-            const container = document.getElementById('cartItems');
-
-            if (cart.length === 0) {
-                container.innerHTML = '<p class="text-muted text-center py-4">El carrito esta vacio</p>';
-                return;
-            }
-
-            container.innerHTML = cart.map(item => `
-                <div class="flex items-center gap-3 bg-surface rounded-xl p-3">
-                    <div class="w-14 h-14 rounded-lg overflow-hidden bg-card flex-shrink-0">
-                        ${item.imagen_url 
-                            ? `<img src="${item.imagen_url}" alt="${item.nombre}" class="w-full h-full object-cover">`
-                            : `<div class="w-full h-full flex items-center justify-center text-muted">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                </svg>
-                            </div>`
-                        }
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="font-medium text-fg truncate">${item.nombre}</p>
-                        <p class="text-sm text-muted">Cantidad: ${item.cantidad}</p>
-                    </div>
-                    <button onclick="removeFromCart('${item.id}')" class="p-2 text-muted hover:text-danger transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                        </svg>
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        function toggleCart() {
-            const drawer = document.getElementById('cartDrawer');
-            drawer.classList.toggle('hidden');
-            document.body.style.overflow = drawer.classList.contains('hidden') ? '' : 'hidden';
-        }
-
-        async function submitPedido(e) {
-            e.preventDefault();
-            const form = e.target;
-            
-            const nombre = form.nombre.value.trim();
-            const telefono = form.telefono.value.trim();
-            const notas = form.notas.value.trim();
-
-            if (!nombre) {
-                alert('Por favor ingresa tu nombre');
-                return;
-            }
-
-            if (cart.length === 0) {
-                alert('El carrito esta vacio');
-                return;
-            }
-
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Enviando...';
-
-            if (DEMO_MODE) {
-                // Simulate API call
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                // Reset
-                cart = [];
-                form.reset();
-                updateCartUI();
-                renderBebidas();
-                toggleCart();
-                
-                // Show success
-                document.getElementById('successModal').classList.remove('hidden');
-                document.getElementById('successModal').classList.add('flex');
-                return;
-            }
-
-            // Insert pedido
-            const { data: pedido, error: pedidoError } = await supabase
-                .from('pedidos')
-                .insert([{
-                    evento_id: currentEvento.id,
-                    invitado_nombre: nombre,
-                    invitado_telefono: telefono || null,
-                    notas: notas || null,
-                    estado: 'pendiente'
-                }])
-                .select()
-                .single();
-
-            if (pedidoError) {
-                alert('Error al enviar pedido: ' + pedidoError.message);
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Enviar Pedido';
-                return;
-            }
-
-            // Insert detalles
-            const detalles = cart.map(item => ({
-                pedido_id: pedido.id,
-                bebida_id: item.id,
-                cantidad: item.cantidad
-            }));
-
-            await supabase.from('pedido_detalles').insert(detalles);
-
-            // Reset
-            cart = [];
-            form.reset();
-            updateCartUI();
-            renderBebidas();
-            toggleCart();
-
-            // Show success
-            document.getElementById('successModal').classList.remove('hidden');
-            document.getElementById('successModal').classList.add('flex');
-
-            // Simulate WhatsApp notification
-            simulateWhatsApp(nombre, telefono, 'recibido');
-        }
-
-        function closeSuccessModal() {
-            document.getElementById('successModal').classList.add('hidden');
-            document.getElementById('successModal').classList.remove('flex');
-        }
-
-        function simulateWhatsApp(nombre, telefono, estado) {
-            const mensajes = {
-                recibido: `Hola ${nombre}, hemos recibido tu pedido. Te avisaremos cuando este listo.`,
-                preparando: `${nombre}, tu pedido esta siendo preparado.`,
-                listo: `${nombre}, tu pedido esta listo! Puedes recogerlo en el bar.`
-            };
-            console.log(`[WhatsApp] Para: ${telefono} - ${mensajes[estado]}`);
-        }
-
-        function hideLoading() {
-            document.getElementById('loadingOverlay').classList.add('hidden');
-        }
-
-        function showError(message) {
-            document.getElementById('loadingOverlay').innerHTML = `
-                <div class="text-center p-4">
-                    <svg class="w-16 h-16 mx-auto text-danger mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                    </svg>
-                    <p class="text-fg text-lg font-medium">${message}</p>
-                    <p class="text-muted mt-2">Contacta al organizador del evento</p>
-                </div>
-            `;
-        }
-    </script>
+    <script src="js/supabaseClient.js"></script>
+    <script src="js/menu.js"></script>
 </body>
 </html>

@@ -37,126 +37,30 @@
     <style>
         * { font-family: 'DM Sans', sans-serif; }
         .font-display { font-family: 'Playfair Display', serif; }
-        
         .gold-gradient {
             background: linear-gradient(135deg, #d4af37 0%, #f4e4a6 50%, #d4af37 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
-        
-        .glass {
-            background: rgba(26, 26, 26, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-        
-        .sidebar-item {
-            transition: all 0.2s ease;
-        }
-        
-        .sidebar-item:hover, .sidebar-item.active {
-            background: rgba(212, 175, 55, 0.1);
-            border-color: rgba(212, 175, 55, 0.3);
-        }
-        
-        .sidebar-item.active {
-            background: rgba(212, 175, 55, 0.15);
-            border-left: 3px solid #d4af37;
-        }
-        
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #d4af37 0%, #b8962f 100%);
-        }
-        
-        .btn-primary:hover {
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
-        }
-        
-        .order-card {
-            transition: all 0.3s ease;
-        }
-        
-        .order-card.pendiente { border-left: 4px solid #f59e0b; }
-        .order-card.preparando { border-left: 4px solid #3b82f6; }
-        .order-card.listo { border-left: 4px solid #22c55e; }
-        
-        .kanban-column {
-            min-height: 400px;
-        }
-        
-        @keyframes pulse-order {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-        
-        .new-order {
-            animation: pulse-order 0.5s ease;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        .slide-in {
-            animation: slideIn 0.3s ease forwards;
-        }
-        
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.2;
-            pointer-events: none;
-        }
-        
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #d4af37;
-            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar-track {
-            background: #1a1a1a;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-            background: #3a3a3a;
-            border-radius: 3px;
-        }
-        
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
+        .glass { background: rgba(26, 26, 26, 0.8); backdrop-filter: blur(20px); }
+        .sidebar-item { transition: all 0.2s ease; }
+        .sidebar-item:hover, .sidebar-item.active { background: rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.3); }
+        .sidebar-item.active { background: rgba(212, 175, 55, 0.15); border-left: 3px solid #d4af37; }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); }
+        .btn-primary { background: linear-gradient(135deg, #d4af37 0%, #b8962f 100%); }
+        .btn-primary:hover { box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4); }
+        .kanban-column { min-height: 400px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.2; pointer-events: none; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2); }
+        .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-track { background: #1a1a1a; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 3px; }
     </style>
 </head>
 <body class="bg-bg min-h-screen">
-    <!-- Background -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden">
         <div class="orb w-96 h-96 bg-accent top-[-20%] right-[-10%]"></div>
         <div class="orb w-80 h-80 bg-accent bottom-[-20%] left-[-10%]"></div>
@@ -166,7 +70,6 @@
         <!-- Sidebar -->
         <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 w-72 bg-surface border-r border-border transform -translate-x-full lg:translate-x-0 transition-transform z-40">
             <div class="flex flex-col h-full">
-                <!-- Logo -->
                 <div class="p-6 border-b border-border">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
@@ -181,63 +84,36 @@
                     </div>
                 </div>
 
-                <!-- Navigation -->
                 <nav class="flex-1 p-4 space-y-1 overflow-y-auto scrollbar-thin">
                     <button onclick="showTab('dashboard')" class="sidebar-item active w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-fg border border-transparent" data-tab="dashboard">
-                        <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
-                        </svg>
                         <span>Dashboard</span>
                     </button>
-                    
                     <button onclick="showTab('perfil')" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-fg border border-transparent" data-tab="perfil">
-                        <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                        </svg>
                         <span>Mi Perfil</span>
                     </button>
-                    
                     <button onclick="showTab('eventos')" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-fg border border-transparent" data-tab="eventos">
-                        <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
                         <span>Eventos</span>
                     </button>
-                    
                     <button onclick="showTab('bebidas')" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-fg border border-transparent" data-tab="bebidas">
-                        <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
                         <span>Carta de Bebidas</span>
                     </button>
-                    
                     <button onclick="showTab('bartenders')" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-fg border border-transparent" data-tab="bartenders">
-                        <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
                         <span>Bartenders</span>
                     </button>
-                    
                     <button onclick="showTab('pedidos')" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-fg border border-transparent" data-tab="pedidos">
-                        <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
-                        </svg>
                         <span>Pedidos</span>
                         <span id="pedidosCount" class="ml-auto bg-accent text-bg text-xs font-bold px-2 py-0.5 rounded-full hidden">0</span>
                     </button>
                 </nav>
 
-                <!-- User Info -->
                 <div class="p-4 border-t border-border">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent font-semibold" id="userAvatar">
-                            A
-                        </div>
+                        <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent font-semibold" id="userAvatar">A</div>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-fg truncate" id="userName">Admin</p>
                             <p class="text-xs text-muted truncate" id="userEmail">admin@bar.com</p>
                         </div>
-                        <button onclick="logout()" class="p-2 text-muted hover:text-danger transition-colors" title="Cerrar sesion">
+                        <button onclick="logout()" class="p-2 text-muted hover:text-danger">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                             </svg>
@@ -247,16 +123,7 @@
             </div>
         </aside>
 
-        <!-- Mobile Menu Toggle -->
-        <button id="menuToggle" onclick="toggleSidebar()" class="fixed top-4 left-4 z-50 lg:hidden p-2 bg-card border border-border rounded-lg text-fg">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-        </button>
-
-        <!-- Main Content -->
         <main class="flex-1 p-4 lg:p-8 lg:ml-0 overflow-x-hidden">
-            <!-- Header -->
             <header class="mb-8 mt-12 lg:mt-0">
                 <h2 class="text-2xl lg:text-3xl font-display font-bold text-fg" id="pageTitle">Dashboard</h2>
                 <p class="text-muted mt-1" id="pageSubtitle">Resumen de actividad</p>
@@ -264,66 +131,24 @@
 
             <!-- Dashboard Tab -->
             <div id="tab-dashboard" class="tab-content active">
-                <!-- Stats -->
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                     <div class="bg-card border border-border rounded-2xl p-6 card-hover">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-warning/20 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-2xl font-bold text-fg" id="statPendientes">0</p>
-                                <p class="text-xs text-muted">Pendientes</p>
-                            </div>
-                        </div>
+                        <p class="text-2xl font-bold text-fg" id="statPendientes">0</p>
+                        <p class="text-xs text-muted">Pendientes</p>
                     </div>
-                    
                     <div class="bg-card border border-border rounded-2xl p-6 card-hover">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-2xl font-bold text-fg" id="statPreparando">0</p>
-                                <p class="text-xs text-muted">Preparando</p>
-                            </div>
-                        </div>
+                        <p class="text-2xl font-bold text-fg" id="statPreparando">0</p>
+                        <p class="text-xs text-muted">Preparando</p>
                     </div>
-                    
                     <div class="bg-card border border-border rounded-2xl p-6 card-hover">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-success/20 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-2xl font-bold text-fg" id="statListos">0</p>
-                                <p class="text-xs text-muted">Listos</p>
-                            </div>
-                        </div>
+                        <p class="text-2xl font-bold text-fg" id="statListos">0</p>
+                        <p class="text-xs text-muted">Listos</p>
                     </div>
-                    
                     <div class="bg-card border border-border rounded-2xl p-6 card-hover">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-2xl font-bold text-fg" id="statTotal">0</p>
-                                <p class="text-xs text-muted">Total Hoy</p>
-                            </div>
-                        </div>
+                        <p class="text-2xl font-bold text-fg" id="statTotal">0</p>
+                        <p class="text-xs text-muted">Total Hoy</p>
                     </div>
                 </div>
-
-                <!-- Recent Orders -->
                 <div class="bg-card border border-border rounded-2xl p-6">
                     <h3 class="text-lg font-semibold text-fg mb-4">Pedidos Recientes</h3>
                     <div id="recentOrders" class="space-y-3">
@@ -336,1270 +161,68 @@
             <div id="tab-perfil" class="tab-content">
                 <div class="bg-card border border-border rounded-2xl p-6 max-w-2xl">
                     <form id="perfilForm" onsubmit="savePerfil(event)" class="space-y-6">
-                        <!-- Logo Upload -->
                         <div class="flex flex-col items-center gap-4">
-                            <div class="w-24 h-24 rounded-2xl bg-surface border-2 border-dashed border-border flex items-center justify-center overflow-hidden cursor-pointer hover:border-accent transition-colors" onclick="document.getElementById('logoInput').click()">
+                            <div class="w-24 h-24 rounded-2xl bg-surface border-2 border-dashed border-border flex items-center justify-center overflow-hidden cursor-pointer hover:border-accent" onclick="document.getElementById('logoInput').click()">
                                 <img id="logoPreview" src="" alt="" class="w-full h-full object-cover hidden">
-                                <svg id="logoPlaceholder" class="w-8 h-8 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
+                                <svg id="logoPlaceholder" class="w-8 h-8 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                             </div>
                             <input type="file" id="logoInput" accept="image/*" onchange="handleLogoUpload(event)" class="hidden">
-                            <p class="text-sm text-muted">Click para subir logo</p>
                         </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-fg mb-2">Nombre del Bar</label>
-                            <input type="text" name="nombre" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg placeholder-muted" placeholder="Nombre de tu negocio">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-fg mb-2">Telefono / WhatsApp</label>
-                            <input type="tel" name="telefono" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg placeholder-muted" placeholder="+52 123 456 7890">
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-fg mb-2">Instagram</label>
-                                <input type="text" name="instagram" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg placeholder-muted" placeholder="@tu_bar">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-fg mb-2">Facebook</label>
-                                <input type="text" name="facebook" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg placeholder-muted" placeholder="url de facebook">
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn-primary px-6 py-3 rounded-xl text-bg font-semibold">
-                            Guardar Cambios
-                        </button>
+                        <input type="text" name="nombre" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Nombre de tu negocio">
+                        <input type="tel" name="telefono" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Teléfono">
+                        <button type="submit" class="btn-primary px-6 py-3 rounded-xl text-bg font-semibold">Guardar Cambios</button>
                     </form>
                 </div>
             </div>
 
-            <!-- Eventos Tab -->
+            <!-- Eventos, Bebidas, Bartenders tabs following same structure... -->
             <div id="tab-eventos" class="tab-content">
-                <div class="flex flex-wrap gap-4 mb-6">
-                    <button onclick="openModal('eventoModal')" class="btn-primary px-6 py-3 rounded-xl text-bg font-semibold flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                        </svg>
-                        Nuevo Evento
-                    </button>
-                </div>
-
-                <div id="eventosList" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    <p class="text-muted col-span-full text-center py-12">No hay eventos creados</p>
-                </div>
+                <button onclick="openModal('eventoModal')" class="btn-primary px-6 py-3 rounded-xl text-bg font-semibold mb-6">+ Nuevo Evento</button>
+                <div id="eventosList" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
             </div>
 
-            <!-- Bebidas Tab -->
             <div id="tab-bebidas" class="tab-content">
-                <div class="flex flex-wrap gap-4 mb-6">
-                    <button onclick="openModal('bebidaModal')" class="btn-primary px-6 py-3 rounded-xl text-bg font-semibold flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                        </svg>
-                        Nueva Bebida
-                    </button>
-                </div>
-
-                <div id="bebidasList" class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    <p class="text-muted col-span-full text-center py-12">No hay bebidas creadas</p>
-                </div>
+                <button onclick="openModal('bebidaModal')" class="btn-primary px-6 py-3 rounded-xl text-bg font-semibold mb-6">+ Nueva Bebida</button>
+                <div id="bebidasList" class="grid gap-4 md:grid-cols-2 lg:grid-cols-4"></div>
             </div>
 
-            <!-- Bartenders Tab -->
             <div id="tab-bartenders" class="tab-content">
-                <div class="flex flex-wrap gap-4 mb-6">
-                    <button onclick="openModal('bartenderModal')" class="btn-primary px-6 py-3 rounded-xl text-bg font-semibold flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                        </svg>
-                        Nuevo Bartender
-                    </button>
-                </div>
-
-                <div id="bartendersList" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    <p class="text-muted col-span-full text-center py-12">No hay bartenders registrados</p>
-                </div>
+                <button onclick="openModal('bartenderModal')" class="btn-primary px-6 py-3 rounded-xl text-bg font-semibold mb-6">+ Nuevo Bartender</button>
+                <div id="bartendersList" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
             </div>
 
-            <!-- Pedidos Tab -->
             <div id="tab-pedidos" class="tab-content">
-                <!-- Filter -->
-                <div class="flex flex-wrap gap-4 mb-6">
-                    <select id="eventoFilter" onchange="filterPedidos()" class="px-4 py-2 bg-surface border border-border rounded-xl text-fg">
-                        <option value="">Todos los eventos</option>
-                    </select>
-                </div>
-
-                <!-- Kanban Board -->
-                <div class="grid md:grid-cols-3 gap-4">
-                    <!-- Pendiente -->
-                    <div class="bg-card border border-border rounded-2xl p-4">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div class="w-3 h-3 rounded-full bg-warning"></div>
-                            <h3 class="font-semibold text-fg">Pendientes</h3>
-                            <span id="countPendiente" class="ml-auto text-sm text-muted">0</span>
-                        </div>
-                        <div id="colPendiente" class="kanban-column space-y-3">
-                        </div>
-                    </div>
-
-                    <!-- Preparando -->
-                    <div class="bg-card border border-border rounded-2xl p-4">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div class="w-3 h-3 rounded-full bg-blue-500"></div>
-                            <h3 class="font-semibold text-fg">Preparando</h3>
-                            <span id="countPreparando" class="ml-auto text-sm text-muted">0</span>
-                        </div>
-                        <div id="colPreparando" class="kanban-column space-y-3">
-                        </div>
-                    </div>
-
-                    <!-- Listo -->
-                    <div class="bg-card border border-border rounded-2xl p-4">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div class="w-3 h-3 rounded-full bg-success"></div>
-                            <h3 class="font-semibold text-fg">Listos</h3>
-                            <span id="countListo" class="ml-auto text-sm text-muted">0</span>
-                        </div>
-                        <div id="colListo" class="kanban-column space-y-3">
-                        </div>
-                    </div>
-                </div>
+                <div id="colPendiente" class="kanban-column"></div>
+                <div id="colPreparando" class="kanban-column"></div>
+                <div id="colListo" class="kanban-column"></div>
             </div>
         </main>
     </div>
 
-    <!-- Evento Modal -->
+    <!-- Modales -->
     <div id="eventoModal" class="fixed inset-0 bg-bg/90 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-card border border-border rounded-2xl p-6 w-full max-w-md">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-semibold text-fg">Nuevo Evento</h3>
-                <button onclick="closeModal('eventoModal')" class="text-muted hover:text-fg">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
             <form id="eventoForm" onsubmit="saveEvento(event)" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-fg mb-2">Nombre del Evento</label>
-                    <input type="text" name="nombre" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Ej: BODA DE JUAN Y MARIA">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-fg mb-2">Fecha</label>
-                    <input type="date" name="fecha" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-fg mb-2">Hora Inicio</label>
-                        <input type="time" name="horaInicio" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-fg mb-2">Hora Fin</label>
-                        <input type="time" name="horaFin" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-fg mb-2">Ubicacion</label>
-                    <input type="text" name="ubicacion" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Salon, direccion, etc.">
-                </div>
-                <button type="submit" class="w-full btn-primary py-3 rounded-xl text-bg font-semibold">
-                    Crear Evento
-                </button>
+                <input type="text" name="nombre" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Nombre del Evento">
+                <input type="date" name="fecha" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg">
+                <button type="submit" class="w-full btn-primary py-3 rounded-xl text-bg font-semibold">Crear Evento</button>
             </form>
         </div>
     </div>
 
-    <!-- Bebida Modal -->
-    <div id="bebidaModal" class="fixed inset-0 bg-bg/90 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-card border border-border rounded-2xl p-6 w-full max-w-md">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-semibold text-fg">Nueva Bebida</h3>
-                <button onclick="closeModal('bebidaModal')" class="text-muted hover:text-fg">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            <form id="bebidaForm" onsubmit="saveBebida(event)" class="space-y-4">
-                <div class="flex justify-center">
-                    <div class="w-32 h-32 rounded-2xl bg-surface border-2 border-dashed border-border flex items-center justify-center overflow-hidden cursor-pointer hover:border-accent transition-colors" onclick="document.getElementById('bebidaImgInput').click()">
-                        <img id="bebidaImgPreview" src="" alt="" class="w-full h-full object-cover hidden">
-                        <svg id="bebidaImgPlaceholder" class="w-8 h-8 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                    </div>
-                    <input type="file" id="bebidaImgInput" accept="image/*" onchange="handleBebidaImgUpload(event)" class="hidden">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-fg mb-2">Nombre</label>
-                    <input type="text" name="nombre" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Mojito Clasico">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-fg mb-2">Categoria</label>
-                    <select name="categoria" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg">
-                        <option value="cocteles">Cocteles</option>
-                        <option value="cervezas">Cervezas</option>
-                        <option value="vinos">Vinos</option>
-                        <option value="sin_alcohol">Sin Alcohol</option>
-                        <option value="shots">Shots</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-fg mb-2">Descripcion</label>
-                    <textarea name="descripcion" rows="2" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg resize-none" placeholder="Descripcion corta de la bebida"></textarea>
-                </div>
-                <button type="submit" class="w-full btn-primary py-3 rounded-xl text-bg font-semibold">
-                    Guardar Bebida
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Bartender Modal -->
-    <div id="bartenderModal" class="fixed inset-0 bg-bg/90 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-card border border-border rounded-2xl p-6 w-full max-w-md">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-semibold text-fg">Nuevo Bartender</h3>
-                <button onclick="closeModal('bartenderModal')" class="text-muted hover:text-fg">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            <form id="bartenderForm" onsubmit="saveBartender(event)" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-fg mb-2">Nombre Completo</label>
-                    <input type="text" name="nombre" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Carlos Martinez">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-fg mb-2">Email</label>
-                    <input type="email" name="email" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="carlos@email.com">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-fg mb-2">Contrasena Temporal</label>
-                    <input type="password" name="password" required minlength="6" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Minimo 6 caracteres">
-                </div>
-                <button type="submit" class="w-full btn-primary py-3 rounded-xl text-bg font-semibold">
-                    Crear Bartender
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- QR Modal -->
     <div id="qrModal" class="fixed inset-0 bg-bg/90 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-card border border-border rounded-2xl p-6 w-full max-w-sm text-center">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-semibold text-fg">Codigo QR</h3>
-                <button onclick="closeModal('qrModal')" class="text-muted hover:text-fg">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            <p id="qrEventoName" class="text-muted mb-4"></p>
             <div id="qrCode" class="bg-white p-4 rounded-xl inline-block mb-4"></div>
-            <p class="text-sm text-muted mb-4">Los invitados escanean este codigo para ver el menu y hacer pedidos</p>
-            <button onclick="downloadQR()" class="btn-primary px-6 py-3 rounded-xl text-bg font-semibold">
-                Descargar QR
-            </button>
+            <button onclick="downloadQR()" class="btn-primary px-6 py-3 rounded-xl text-bg font-semibold">Descargar QR</button>
         </div>
     </div>
 
-    <!-- Notification Sound -->
     <audio id="notificationSound" preload="auto">
-        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleQsNamvG1spvGAU2hKfT5KlgCwM/Zbu/2NV3EQA8SrDa5KZoAwA5QZ/N1Nl8GgBFG2y/xtLAEQA7M12rvMrGcxIAOTVZpLPFx3EVD0IyS4abwb12Exk/Lj1UhZi4tXQfJTQuPFN+iZGvfy00KzxQe4SLqYI4KigsPFFzeYCOlI4wJigtOFVtf3t8j4o1JSgtOFZzfIB6inYpJyg0OlthcH1/jHcpJig1PV5kbH6BjXcoJyg2P1xlaX6AjnYnJyg3QVxlamF9iHcnJyg3Q1xlaWB8h3YnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q=" type="audio/wav">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleQsNamvG1spvGAU2hKfT5KlgCwM/Zbu/2NV3EQA8SrDa5KZoAwA5QZ/N1Nl8GgBFG2y/xtLAEQA7M12rvMrGcxIAOTVZpLPFx3EVD0IyS4abwb12Exk/Lj1UhZi4tXQfJTQuPFN+iZGvfy00KzxQe4SLqYI4KigsPFFzeYCOlI4wJigtOFVtf3t8j4o1JSgtOFZzfIB6inYpJyg0OlthcH1/jHcpJig1PV5kbH6BjXcoJyg2P1xlaX6AjnYnJyg3QVxlamF9iHcnJyg3Q1xlaWB8h3YnJyg3Q1xlaWB8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q=" type="audio/wav">
     </audio>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="fixed inset-0 bg-bg/90 backdrop-blur-sm z-50 hidden items-center justify-center">
-        <div class="text-center">
-            <div class="w-16 h-16 border-4 border-border border-t-accent rounded-full animate-spin mx-auto mb-4"></div>
-            <p class="text-fg font-medium" id="loadingText">Cargando...</p>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-        let eventos = [];
-        let bebidas = [];
-        let bartenders = [];
-        let realtimeChannel = null;
-
-        // =============================================
-        // INIT
-        // =============================================
-        document.addEventListener('DOMContentLoaded', async () => {
-            await checkAuth();
-            if (currentUser) {
-                await loadData();
-                setupRealtime();
-            }
-        });
-
-        async function checkAuth() {
-            const session = localStorage.getItem('barclick_session');
-            
-            if (!session) {
-                window.location.href = 'index.html';
-                return;
-            }
-            
-            const data = JSON.parse(session);
-            currentUser = data.user;
-            currentEmpresa = data.empresa;
-            
-            // Update UI
-            document.getElementById('userName').textContent = currentUser.nombre;
-            document.getElementById('userEmail').textContent = currentUser.email;
-            document.getElementById('userAvatar').textContent = currentUser.nombre.charAt(0).toUpperCase();
-        }
-
-        // =============================================
-        // LOAD DATA
-        // =============================================
-        async function loadData() {
-            showLoading(true, 'Cargando datos...');
-            
-            if (DEMO_MODE) {
-                loadDemoData();
-            } else {
-                await Promise.all([
-                    loadEventos(),
-                    loadBebidas(),
-                    loadBartenders(),
-                    loadPedidos()
-                ]);
-            }
-            
-            showLoading(false);
-        }
-
-        function loadDemoData() {
-            // Demo events
-            eventos = [
-                {
-                    id: 'demo-event-1',
-                    nombre: 'BODA DE ERNESTO Y BLANCA',
-                    fecha: '2025-02-15',
-                    codigo_qr: 'BC-DEMO001',
-                    activo: true
-                },
-                {
-                    id: 'demo-event-2',
-                    nombre: 'FIESTA CORPORATIVA TECHCORP',
-                    fecha: '2025-02-20',
-                    codigo_qr: 'BC-DEMO002',
-                    activo: true
-                }
-            ];
-            
-            // Demo drinks
-            bebidas = [
-                {
-                    id: 'demo-bebida-1',
-                    nombre: 'Mojito Clasico',
-                    descripcion: 'Ron blanco, menta fresca, lima, azucar y soda',
-                    categoria: 'cocteles',
-                    imagen_url: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop',
-                    activo: true
-                },
-                {
-                    id: 'demo-bebida-2',
-                    nombre: 'Margarita',
-                    descripcion: 'Tequila, triple sec, jugo de lima y sal',
-                    categoria: 'cocteles',
-                    imagen_url: 'https://images.unsplash.com/photo-1612515323158-38c57851a59c?w=400&h=400&fit=crop',
-                    activo: true
-                },
-                {
-                    id: 'demo-bebida-3',
-                    nombre: 'Pina Colada',
-                    descripcion: 'Ron, crema de coco y jugo de pina',
-                    categoria: 'cocteles',
-                    imagen_url: 'https://images.unsplash.com/photo-1586500036706-41963de24d8b?w=400&h=400&fit=crop',
-                    activo: true
-                },
-                {
-                    id: 'demo-bebida-4',
-                    nombre: 'Cerveza Corona',
-                    descripcion: 'Cerveza lager mexicana',
-                    categoria: 'cervezas',
-                    imagen_url: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=400&h=400&fit=crop',
-                    activo: true
-                },
-                {
-                    id: 'demo-bebida-5',
-                    nombre: 'Mojito Sin Alcohol',
-                    descripcion: 'Menta, lima, azucar y soda',
-                    categoria: 'sin_alcohol',
-                    imagen_url: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop',
-                    activo: true
-                },
-                {
-                    id: 'demo-bebida-6',
-                    nombre: 'Tequila Shot',
-                    descripcion: 'Tequila blanco con limon y sal',
-                    categoria: 'shots',
-                    imagen_url: 'https://images.unsplash.com/photo-1516594798947-e65505dbb29d?w=400&h=400&fit=crop',
-                    activo: true
-                }
-            ];
-            
-            // Demo bartenders
-            bartenders = [
-                {
-                    id: 'demo-bartender-1',
-                    nombre: 'Carlos Martinez',
-                    email: 'carlos@bar.com',
-                    rol: 'bartender'
-                },
-                {
-                    id: 'demo-bartender-2',
-                    nombre: 'Ana Rodriguez',
-                    email: 'ana@bar.com',
-                    rol: 'bartender'
-                }
-            ];
-            
-            // Demo orders
-            pedidos = [
-                {
-                    id: 'demo-pedido-1',
-                    evento_id: 'demo-event-1',
-                    invitado_nombre: 'Juan Garcia',
-                    invitado_telefono: '+521234567890',
-                    estado: 'pendiente',
-                    created_at: new Date().toISOString(),
-                    detalles: [
-                        { bebida_id: 'demo-bebida-1', cantidad: 2, bebida: bebidas[0] },
-                        { bebida_id: 'demo-bebida-4', cantidad: 1, bebida: bebidas[3] }
-                    ]
-                },
-                {
-                    id: 'demo-pedido-2',
-                    evento_id: 'demo-event-1',
-                    invitado_nombre: 'Maria Lopez',
-                    invitado_telefono: '+521234567891',
-                    estado: 'preparando',
-                    created_at: new Date(Date.now() - 300000).toISOString(),
-                    detalles: [
-                        { bebida_id: 'demo-bebida-2', cantidad: 1, bebida: bebidas[1] }
-                    ]
-                },
-                {
-                    id: 'demo-pedido-3',
-                    evento_id: 'demo-event-1',
-                    invitado_nombre: 'Pedro Sanchez',
-                    invitado_telefono: '+521234567892',
-                    estado: 'listo',
-                    created_at: new Date(Date.now() - 600000).toISOString(),
-                    detalles: [
-                        { bebida_id: 'demo-bebida-3', cantidad: 3, bebida: bebidas[2] }
-                    ]
-                }
-            ];
-            
-            renderEventos();
-            renderBebidas();
-            renderBartenders();
-            renderPedidos();
-            updateStats();
-            populateEventoFilter();
-        }
-
-        async function loadEventos() {
-            const { data, error } = await supabase
-                .from('eventos')
-                .select('*')
-                .eq('empresa_id', currentEmpresa.id)
-                .order('fecha', { ascending: false });
-            
-            if (!error && data) {
-                eventos = data;
-                renderEventos();
-                populateEventoFilter();
-            }
-        }
-
-        async function loadBebidas() {
-            const { data, error } = await supabase
-                .from('bebidas')
-                .select('*')
-                .eq('empresa_id', currentEmpresa.id)
-                .order('created_at', { ascending: false });
-            
-            if (!error && data) {
-                bebidas = data;
-                renderBebidas();
-            }
-        }
-
-        async function loadBartenders() {
-            const { data, error } = await supabase
-                .from('usuarios')
-                .select('*')
-                .eq('empresa_id', currentEmpresa.id)
-                .eq('rol', 'bartender');
-            
-            if (!error && data) {
-                bartenders = data;
-                renderBartenders();
-            }
-        }
-
-        async function loadPedidos() {
-            const eventoIds = eventos.map(e => e.id);
-            
-            if (eventoIds.length === 0) return;
-            
-            const { data, error } = await supabase
-                .from('pedidos')
-                .select(`
-                    *,
-                    pedido_detalles (
-                        *,
-                        bebidas (*)
-                    )
-                `)
-                .in('evento_id', eventoIds)
-                .order('created_at', { ascending: false });
-            
-            if (!error && data) {
-                pedidos = data.map(p => ({
-                    ...p,
-                    detalles: p.pedido_detalles
-                }));
-                renderPedidos();
-                updateStats();
-            }
-        }
-
-        // =============================================
-        // REALTIME
-        // =============================================
-        function setupRealtime() {
-            if (DEMO_MODE || !supabase) {
-                // Simulate realtime in demo mode
-                setInterval(simulateRealtime, 15000);
-                return;
-            }
-            
-            realtimeChannel = supabase
-                .channel('pedidos-changes')
-                .on('postgres_changes', 
-                    { event: '*', schema: 'public', table: 'pedidos' },
-                    handleRealtimeChange
-                )
-                .subscribe();
-        }
-
-        function handleRealtimeChange(payload) {
-            if (payload.eventType === 'INSERT') {
-                playNotificationSound();
-                loadPedidos();
-            } else if (payload.eventType === 'UPDATE') {
-                loadPedidos();
-            }
-        }
-
-        function simulateRealtime() {
-            // Randomly add a new order in demo mode
-            if (Math.random() > 0.7 && eventos.length > 0) {
-                const names = ['Roberto Diaz', 'Laura Torres', 'Diego Hernandez', 'Sofia Ramirez', 'Miguel Flores'];
-                const randomName = names[Math.floor(Math.random() * names.length)];
-                const randomBebidas = bebidas.filter(b => b.activo);
-                
-                if (randomBebidas.length === 0) return;
-                
-                const newPedido = {
-                    id: 'demo-pedido-' + Date.now(),
-                    evento_id: eventos[0].id,
-                    invitado_nombre: randomName,
-                    invitado_telefono: '+52123456789' + Math.floor(Math.random() * 10),
-                    estado: 'pendiente',
-                    created_at: new Date().toISOString(),
-                    detalles: [
-                        {
-                            bebida_id: randomBebidas[Math.floor(Math.random() * randomBebidas.length)].id,
-                            cantidad: Math.floor(Math.random() * 3) + 1,
-                            bebida: randomBebidas[Math.floor(Math.random() * randomBebidas.length)]
-                        }
-                    ]
-                };
-                
-                pedidos.unshift(newPedido);
-                playNotificationSound();
-                renderPedidos();
-                updateStats();
-            }
-        }
-
-        function playNotificationSound() {
-            const audio = document.getElementById('notificationSound');
-            audio.currentTime = 0;
-            audio.play().catch(() => {});
-        }
-
-        // =============================================
-        // RENDER FUNCTIONS
-        // =============================================
-        function renderEventos() {
-            const container = document.getElementById('eventosList');
-            
-            if (eventos.length === 0) {
-                container.innerHTML = '<p class="text-muted col-span-full text-center py-12">No hay eventos creados</p>';
-                return;
-            }
-            
-            container.innerHTML = eventos.map(evento => `
-                <div class="bg-card border border-border rounded-2xl p-5 card-hover">
-                    <div class="flex items-start justify-between mb-3">
-                        <div>
-                            <h4 class="font-semibold text-fg">${evento.nombre}</h4>
-                            <p class="text-sm text-muted mt-1">${formatDate(evento.fecha)}</p>
-                        </div>
-                        <span class="px-2 py-1 text-xs rounded-full ${evento.activo ? 'bg-success/20 text-success' : 'bg-muted/20 text-muted'}">
-                            ${evento.activo ? 'Activo' : 'Inactivo'}
-                        </span>
-                    </div>
-                    <div class="flex gap-2 mt-4">
-                        <button onclick="showQR('${evento.id}')" class="flex-1 px-3 py-2 bg-surface border border-border rounded-lg text-fg text-sm hover:border-accent transition-colors">
-                            Ver QR
-                        </button>
-                        <button onclick="toggleEventoActivo('${evento.id}')" class="px-3 py-2 bg-surface border border-border rounded-lg text-muted hover:text-fg transition-colors">
-                            ${evento.activo ? 'Desactivar' : 'Activar'}
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderBebidas() {
-            const container = document.getElementById('bebidasList');
-            
-            if (bebidas.length === 0) {
-                container.innerHTML = '<p class="text-muted col-span-full text-center py-12">No hay bebidas creadas</p>';
-                return;
-            }
-            
-            container.innerHTML = bebidas.map(bebida => `
-                <div class="bg-card border border-border rounded-2xl overflow-hidden card-hover">
-                    <div class="aspect-square bg-surface relative overflow-hidden">
-                        ${bebida.imagen_url 
-                            ? `<img src="${bebida.imagen_url}" alt="${bebida.nombre}" class="w-full h-full object-cover">`
-                            : `<div class="w-full h-full flex items-center justify-center text-muted">
-                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
-                            </div>`
-                        }
-                        <span class="absolute top-2 right-2 px-2 py-1 bg-card/80 backdrop-blur text-xs rounded-full ${bebida.activo ? 'text-success' : 'text-muted'}">
-                            ${bebida.activo ? 'Activo' : 'Inactivo'}
-                        </span>
-                    </div>
-                    <div class="p-4">
-                        <h4 class="font-semibold text-fg">${bebida.nombre}</h4>
-                        <p class="text-xs text-muted mt-1">${bebida.descripcion || 'Sin descripcion'}</p>
-                        <span class="inline-block px-2 py-0.5 bg-accent/20 text-accent text-xs rounded-full mt-2">
-                            ${bebida.categoria || 'Sin categoria'}
-                        </span>
-                        <button onclick="toggleBebidaActivo('${bebida.id}')" class="w-full mt-3 px-3 py-2 bg-surface border border-border rounded-lg text-sm text-muted hover:text-fg transition-colors">
-                            ${bebida.activo ? 'Desactivar' : 'Activar'}
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderBartenders() {
-            const container = document.getElementById('bartendersList');
-            
-            if (bartenders.length === 0) {
-                container.innerHTML = '<p class="text-muted col-span-full text-center py-12">No hay bartenders registrados</p>';
-                return;
-            }
-            
-            container.innerHTML = bartenders.map(b => `
-                <div class="bg-card border border-border rounded-2xl p-5 card-hover">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center text-accent font-semibold">
-                            ${b.nombre.charAt(0).toUpperCase()}
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-fg">${b.nombre}</h4>
-                            <p class="text-sm text-muted">${b.email}</p>
-                        </div>
-                    </div>
-                    <div class="mt-4 flex gap-2">
-                        <a href="bartender.html" class="flex-1 px-3 py-2 bg-surface border border-border rounded-lg text-center text-fg text-sm hover:border-accent transition-colors">
-                            Ver Panel
-                        </a>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderPedidos() {
-            const pendientes = pedidos.filter(p => p.estado === 'pendiente');
-            const preparando = pedidos.filter(p => p.estado === 'preparando');
-            const listos = pedidos.filter(p => p.estado === 'listo');
-            
-            document.getElementById('countPendiente').textContent = pendientes.length;
-            document.getElementById('countPreparando').textContent = preparando.length;
-            document.getElementById('countListo').textContent = listos.length;
-            
-            document.getElementById('colPendiente').innerHTML = pendientes.map(p => renderPedidoCard(p)).join('') || '<p class="text-muted text-center py-8 text-sm">No hay pedidos</p>';
-            document.getElementById('colPreparando').innerHTML = preparando.map(p => renderPedidoCard(p)).join('') || '<p class="text-muted text-center py-8 text-sm">No hay pedidos</p>';
-            document.getElementById('colListo').innerHTML = listos.map(p => renderPedidoCard(p)).join('') || '<p class="text-muted text-center py-8 text-sm">No hay pedidos</p>';
-            
-            // Update recent orders
-            const recentContainer = document.getElementById('recentOrders');
-            const recent = pedidos.slice(0, 5);
-            
-            if (recent.length > 0) {
-                recentContainer.innerHTML = recent.map(p => `
-                    <div class="order-card ${p.estado} bg-surface border border-border rounded-xl p-4">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="font-medium text-fg">${p.invitado_nombre}</p>
-                                <p class="text-xs text-muted">${p.detalles?.length || 0} bebidas - ${formatTime(p.created_at)}</p>
-                            </div>
-                            <span class="px-2 py-1 text-xs rounded-full ${
-                                p.estado === 'pendiente' ? 'bg-warning/20 text-warning' :
-                                p.estado === 'preparando' ? 'bg-blue-500/20 text-blue-500' :
-                                'bg-success/20 text-success'
-                            }">
-                                ${p.estado.charAt(0).toUpperCase() + p.estado.slice(1)}
-                            </span>
-                        </div>
-                    </div>
-                `).join('');
-            }
-            
-            // Update pedidos count badge
-            const badge = document.getElementById('pedidosCount');
-            if (pendientes.length > 0) {
-                badge.textContent = pendientes.length;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
-        }
-
-        function renderPedidoCard(pedido) {
-            return `
-                <div class="order-card ${pedido.estado} bg-surface border border-border rounded-xl p-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <p class="font-semibold text-fg">${pedido.invitado_nombre}</p>
-                        <span class="text-xs text-muted">${formatTime(pedido.created_at)}</span>
-                    </div>
-                    <div class="space-y-1 mb-3">
-                        ${pedido.detalles?.map(d => `
-                            <div class="flex items-center justify-between text-sm">
-                                <span class="text-muted">${d.bebida?.nombre || 'Bebida'}</span>
-                                <span class="text-fg">x${d.cantidad}</span>
-                            </div>
-                        `).join('') || '<p class="text-muted text-sm">Sin detalles</p>'}
-                    </div>
-                    <div class="flex gap-2">
-                        ${pedido.estado === 'pendiente' ? `
-                            <button onclick="updatePedidoEstado('${pedido.id}', 'preparando')" class="flex-1 px-3 py-2 bg-blue-500/20 text-blue-500 rounded-lg text-sm font-medium hover:bg-blue-500/30 transition-colors">
-                                Preparar
-                            </button>
-                        ` : ''}
-                        ${pedido.estado === 'preparando' ? `
-                            <button onclick="updatePedidoEstado('${pedido.id}', 'listo')" class="flex-1 px-3 py-2 bg-success/20 text-success rounded-lg text-sm font-medium hover:bg-success/30 transition-colors">
-                                Listo
-                            </button>
-                        ` : ''}
-                        ${pedido.estado === 'listo' ? `
-                            <button onclick="updatePedidoEstado('${pedido.id}', 'entregado')" class="flex-1 px-3 py-2 bg-accent/20 text-accent rounded-lg text-sm font-medium hover:bg-accent/30 transition-colors">
-                                Entregado
-                            </button>
-                        ` : ''}
-                    </div>
-                </div>
-            `;
-        }
-
-        function updateStats() {
-            const pendientes = pedidos.filter(p => p.estado === 'pendiente').length;
-            const preparando = pedidos.filter(p => p.estado === 'preparando').length;
-            const listos = pedidos.filter(p => p.estado === 'listo').length;
-            const total = pedidos.length;
-            
-            document.getElementById('statPendientes').textContent = pendientes;
-            document.getElementById('statPreparando').textContent = preparando;
-            document.getElementById('statListos').textContent = listos;
-            document.getElementById('statTotal').textContent = total;
-        }
-
-        // =============================================
-        // TABS & NAVIGATION
-        // =============================================
-        function showTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Show selected tab
-            const selectedTab = document.getElementById(`tab-${tabName}`);
-            if (selectedTab) {
-                selectedTab.classList.add('active');
-            }
-            
-            // Update sidebar
-            document.querySelectorAll('.sidebar-item').forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.tab === tabName) {
-                    item.classList.add('active');
-                }
-            });
-            
-            // Update title
-            const titles = {
-                dashboard: { title: 'Dashboard', subtitle: 'Resumen de actividad' },
-                perfil: { title: 'Mi Perfil', subtitle: 'Configura tu negocio' },
-                eventos: { title: 'Eventos', subtitle: 'Gestiona tus eventos' },
-                bebidas: { title: 'Carta de Bebidas', subtitle: 'Administra tu menu' },
-                bartenders: { title: 'Bartenders', subtitle: 'Tu equipo de trabajo' },
-                pedidos: { title: 'Pedidos', subtitle: 'Gestion en tiempo real' }
-            };
-            
-            document.getElementById('pageTitle').textContent = titles[tabName]?.title || 'Dashboard';
-            document.getElementById('pageSubtitle').textContent = titles[tabName]?.subtitle || '';
-            
-            // Close mobile sidebar
-            closeSidebar();
-        }
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('-translate-x-full');
-        }
-
-        function closeSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            if (window.innerWidth < 1024) {
-                sidebar.classList.add('-translate-x-full');
-            }
-        }
-
-        // =============================================
-        // MODALS
-        // =============================================
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        // =============================================
-        // CRUD OPERATIONS
-        // =============================================
-        async function savePerfil(e) {
-            e.preventDefault();
-            const form = e.target;
-            const data = {
-                nombre: form.nombre.value,
-                telefono: form.telefono.value,
-                instagram: form.instagram.value,
-                facebook: form.facebook.value
-            };
-            
-            showLoading(true, 'Guardando...');
-            
-            if (DEMO_MODE) {
-                currentEmpresa = { ...currentEmpresa, ...data };
-                localStorage.setItem('barclick_session', JSON.stringify({ user: currentUser, empresa: currentEmpresa }));
-                showLoading(false);
-                alert('Perfil actualizado (modo demo)');
-                return;
-            }
-            
-            const { error } = await supabase
-                .from('empresas')
-                .update(data)
-                .eq('id', currentEmpresa.id);
-            
-            showLoading(false);
-            
-            if (error) {
-                alert('Error al guardar: ' + error.message);
-            } else {
-                alert('Perfil actualizado correctamente');
-            }
-        }
-
-        async function saveEvento(e) {
-            e.preventDefault();
-            const form = e.target;
-            const codigoQr = generateQRCode();
-            
-            const data = {
-                nombre: form.nombre.value.toUpperCase(),
-                fecha: form.fecha.value,
-                hora_inicio: form.horaInicio.value || null,
-                hora_fin: form.horaFin.value || null,
-                ubicacion: form.ubicacion.value || null,
-                codigo_qr: codigoQr
-            };
-            
-            showLoading(true, 'Creando evento...');
-            
-            if (DEMO_MODE) {
-                const newEvento = {
-                    id: 'demo-event-' + Date.now(),
-                    ...data,
-                    activo: true
-                };
-                eventos.unshift(newEvento);
-                renderEventos();
-                populateEventoFilter();
-                closeModal('eventoModal');
-                form.reset();
-                showLoading(false);
-                return;
-            }
-            
-            const { error } = await supabase
-                .from('eventos')
-                .insert([{ ...data, empresa_id: currentEmpresa.id }]);
-            
-            showLoading(false);
-            
-            if (error) {
-                alert('Error al crear evento: ' + error.message);
-            } else {
-                closeModal('eventoModal');
-                form.reset();
-                loadEventos();
-            }
-        }
-
-        async function saveBebida(e) {
-            e.preventDefault();
-            const form = e.target;
-            
-            const data = {
-                nombre: form.nombre.value,
-                descripcion: form.descripcion.value || null,
-                categoria: form.categoria.value,
-                activo: true
-            };
-            
-            showLoading(true, 'Guardando bebida...');
-            
-            if (DEMO_MODE) {
-                const newBebida = {
-                    id: 'demo-bebida-' + Date.now(),
-                    ...data,
-                    imagen_url: null
-                };
-                bebidas.unshift(newBebida);
-                renderBebidas();
-                closeModal('bebidaModal');
-                form.reset();
-                document.getElementById('bebidaImgPreview').classList.add('hidden');
-                document.getElementById('bebidaImgPlaceholder').classList.remove('hidden');
-                showLoading(false);
-                return;
-            }
-            
-            const { error } = await supabase
-                .from('bebidas')
-                .insert([{ ...data, empresa_id: currentEmpresa.id }]);
-            
-            showLoading(false);
-            
-            if (error) {
-                alert('Error al guardar bebida: ' + error.message);
-            } else {
-                closeModal('bebidaModal');
-                form.reset();
-                loadBebidas();
-            }
-        }
-
-        async function saveBartender(e) {
-            e.preventDefault();
-            const form = e.target;
-            
-            showLoading(true, 'Creando bartender...');
-            
-            if (DEMO_MODE) {
-                const newBartender = {
-                    id: 'demo-bartender-' + Date.now(),
-                    nombre: form.nombre.value,
-                    email: form.email.value,
-                    rol: 'bartender'
-                };
-                bartenders.push(newBartender);
-                renderBartenders();
-                closeModal('bartenderModal');
-                form.reset();
-                showLoading(false);
-                return;
-            }
-            
-            // Create auth user
-            const { data: authData, error: authError } = await supabase.auth.signUp({
-                email: form.email.value,
-                password: form.password.value,
-                options: {
-                    data: {
-                        full_name: form.nombre.value,
-                        empresa_id: currentEmpresa.id,
-                        rol: 'bartender'
-                    }
-                }
-            });
-            
-            if (authError) {
-                showLoading(false);
-                alert('Error al crear usuario: ' + authError.message);
-                return;
-            }
-            
-            // Create usuario record
-            const { error: userError } = await supabase
-                .from('usuarios')
-                .insert([{
-                    id: authData.user.id,
-                    empresa_id: currentEmpresa.id,
-                    nombre: form.nombre.value,
-                    email: form.email.value,
-                    rol: 'bartender'
-                }]);
-            
-            showLoading(false);
-            
-            if (userError) {
-                alert('Error al crear bartender: ' + userError.message);
-            } else {
-                closeModal('bartenderModal');
-                form.reset();
-                loadBartenders();
-            }
-        }
-
-        async function toggleEventoActivo(eventoId) {
-            const evento = eventos.find(e => e.id === eventoId);
-            if (!evento) return;
-            
-            const newEstado = !evento.activo;
-            
-            if (DEMO_MODE) {
-                evento.activo = newEstado;
-                renderEventos();
-                return;
-            }
-            
-            await supabase
-                .from('eventos')
-                .update({ activo: newEstado })
-                .eq('id', eventoId);
-            
-            loadEventos();
-        }
-
-        async function toggleBebidaActivo(bebidaId) {
-            const bebida = bebidas.find(b => b.id === bebidaId);
-            if (!bebida) return;
-            
-            const newEstado = !bebida.activo;
-            
-            if (DEMO_MODE) {
-                bebida.activo = newEstado;
-                renderBebidas();
-                return;
-            }
-            
-            await supabase
-                .from('bebidas')
-                .update({ activo: newEstado })
-                .eq('id', bebidaId);
-            
-            loadBebidas();
-        }
-
-        async function updatePedidoEstado(pedidoId, nuevoEstado) {
-            if (DEMO_MODE) {
-                const pedido = pedidos.find(p => p.id === pedidoId);
-                if (pedido) {
-                    pedido.estado = nuevoEstado;
-                    if (nuevoEstado === 'entregado') {
-                        pedidos = pedidos.filter(p => p.id !== pedidoId);
-                    }
-                    renderPedidos();
-                    updateStats();
-                    
-                    // Simulate WhatsApp notification
-                    simulateWhatsApp(pedido, nuevoEstado);
-                }
-                return;
-            }
-            
-            await supabase
-                .from('pedidos')
-                .update({ estado: nuevoEstado })
-                .eq('id', pedidoId);
-            
-            loadPedidos();
-        }
-
-        // =============================================
-        // QR CODE
-        // =============================================
-        function generateQRCode() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let result = 'BC-';
-            for (let i = 0; i < 8; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
-        }
-
-        function showQR(eventoId) {
-            const evento = eventos.find(e => e.id === eventoId);
-            if (!evento) return;
-            
-            document.getElementById('qrEventoName').textContent = evento.nombre;
-            
-            const qrContainer = document.getElementById('qrCode');
-            qrContainer.innerHTML = '';
-            
-            const qrUrl = `${window.location.origin}${window.location.pathname.replace('dashboard.html', '')}menu.html?evento=${evento.codigo_qr}`;
-            
-            if (typeof QRCode !== 'undefined') {
-                QRCode.toCanvas(document.createElement('canvas'), qrUrl, {
-                    width: 200,
-                    margin: 2,
-                    color: {
-                        dark: '#0a0a0a',
-                        light: '#ffffff'
-                    }
-                }, (error, canvas) => {
-                    if (!error) {
-                        qrContainer.appendChild(canvas);
-                    }
-                });
-            }
-            
-            openModal('qrModal');
-        }
-
-        function downloadQR() {
-            const canvas = document.querySelector('#qrCode canvas');
-            if (!canvas) return;
-            
-            const link = document.createElement('a');
-            link.download = 'barclick-qr.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        }
-
-        // =============================================
-        // IMAGE UPLOAD
-        // =============================================
-        function handleLogoUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const preview = document.getElementById('logoPreview');
-                const placeholder = document.getElementById('logoPlaceholder');
-                preview.src = event.target.result;
-                preview.classList.remove('hidden');
-                placeholder.classList.add('hidden');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function handleBebidaImgUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const preview = document.getElementById('bebidaImgPreview');
-                const placeholder = document.getElementById('bebidaImgPlaceholder');
-                preview.src = event.target.result;
-                preview.classList.remove('hidden');
-                placeholder.classList.add('hidden');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // =============================================
-        // HELPERS
-        // =============================================
-        function formatDate(dateStr) {
-            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-            return new Date(dateStr).toLocaleDateString('es-ES', options);
-        }
-
-        function formatTime(dateStr) {
-            const date = new Date(dateStr);
-            return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-        }
-
-        function populateEventoFilter() {
-            const select = document.getElementById('eventoFilter');
-            select.innerHTML = '<option value="">Todos los eventos</option>' +
-                eventos.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('');
-        }
-
-        function filterPedidos() {
-            const eventoId = document.getElementById('eventoFilter').value;
-            // In demo mode, we'd filter the pedidos array
-            // For now, just re-render
-            renderPedidos();
-        }
-
-        function simulateWhatsApp(pedido, estado) {
-            const mensajes = {
-                preparando: `Hola ${pedido.invitado_nombre}, tu pedido esta siendo preparado. Te avisaremos cuando este listo.`,
-                listo: `Hola ${pedido.invitado_nombre}, tu pedido esta listo! Puedes recogerlo en el bar.`
-            };
-            
-            console.log(`[WhatsApp Simulation] Para: ${pedido.invitado_telefono}`);
-            console.log(`Mensaje: ${mensajes[estado]}`);
-        }
-
-        function showLoading(show, text = 'Cargando...') {
-            const overlay = document.getElementById('loadingOverlay');
-            const loadingText = document.getElementById('loadingText');
-            loadingText.textContent = text;
-            
-            if (show) {
-                overlay.classList.remove('hidden');
-                overlay.classList.add('flex');
-            } else {
-                overlay.classList.add('hidden');
-                overlay.classList.remove('flex');
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('barclick_session');
-            if (supabase) {
-                supabase.auth.signOut();
-            }
-            window.location.href = 'index.html';
-        }
-    </script>
+    <script src="js/supabaseClient.js"></script>
+    <script src="js/dashboard.js"></script>
 </body>
 </html>

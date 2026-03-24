@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BarClick - Panel Bartender</title>
+    <title>BarClick - Panel de Bartender</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
@@ -28,315 +28,102 @@
     </script>
     <style>
         * { font-family: 'DM Sans', sans-serif; }
-        
-        .kanban-column {
-            min-height: calc(100vh - 200px);
+        .font-display { font-family: 'Playfair Display', serif; }
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #f4e4a6 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        
-        .order-card {
-            transition: all 0.3s ease;
-            cursor: grab;
-        }
-        
-        .order-card:active {
-            cursor: grabbing;
-        }
-        
-        .order-card.pendiente { border-left: 4px solid #f59e0b; }
-        .order-card.preparando { border-left: 4px solid #3b82f6; }
-        .order-card.listo { border-left: 4px solid #22c55e; }
-        
-        @keyframes pulse-new {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
-            50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(212, 175, 55, 0.6); }
-        }
-        
-        .new-order {
-            animation: pulse-new 0.6s ease;
-        }
-        
-        .btn-action {
-            transition: all 0.2s ease;
-        }
-        
-        .btn-action:active {
-            transform: scale(0.95);
-        }
+        .order-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .order-card.pendiente { border-top: 4px solid #f59e0b; }
+        .order-card.preparando { border-top: 4px solid #3b82f6; }
+        .order-card.listo { border-top: 4px solid #22c55e; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .slide-in { animation: slideIn 0.4s ease-out forwards; }
     </style>
 </head>
-<body class="bg-bg min-h-screen p-4 lg:p-6">
+<body class="bg-bg min-h-screen">
     <!-- Header -->
-    <header class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
-                <svg class="w-5 h-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M8 21h8m-4-4v4m-5-8l2-9h6l2 9M5 9h14a2 2 0 012 2v2a7 7 0 01-14 0v-2a2 2 0 012-2z" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+    <header class="bg-surface border-b border-border sticky top-0 z-40 p-4 lg:p-6">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M8 21h8m-4-4v4m-5-8l2-9h6l2 9M5 9h14a2 2 0 012 2v2a7 7 0 01-14 0v-2a2 2 0 012-2z" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold gold-gradient">BarClick</h1>
+                    <p class="text-xs text-muted font-bold tracking-widest uppercase">Panel de Bartender</p>
+                </div>
             </div>
-            <div>
-                <h1 class="text-xl font-bold text-fg">Panel Bartender</h1>
-                <p class="text-sm text-muted" id="eventoActual">Todos los eventos</p>
+
+            <div class="flex items-center gap-4">
+                <select id="eventoFilter" onchange="filterPedidos()" class="bg-card border border-border text-fg text-sm rounded-xl px-4 py-2 outline-none focus:border-accent hidden md:block">
+                    <option value="">Todos los eventos</option>
+                </select>
+                <button onclick="logout()" class="p-2 text-muted hover:text-danger">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                </button>
             </div>
-        </div>
-        <div class="flex items-center gap-3">
-            <select id="eventoFilter" onchange="filterPedidos()" class="px-4 py-2 bg-surface border border-border rounded-xl text-fg text-sm">
-                <option value="">Todos los eventos</option>
-            </select>
-            <button onclick="logout()" class="p-2 text-muted hover:text-danger transition-colors" title="Cerrar sesion">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                </svg>
-            </button>
         </div>
     </header>
 
-    <!-- Kanban Board -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- Pendientes -->
-        <div class="bg-card border border-border rounded-2xl overflow-hidden">
-            <div class="bg-warning/10 border-b border-border p-4 flex items-center gap-3">
-                <div class="w-3 h-3 rounded-full bg-warning"></div>
-                <h2 class="font-semibold text-fg">Pendientes</h2>
-                <span id="countPendiente" class="ml-auto bg-warning/20 text-warning text-sm font-bold px-2 py-0.5 rounded-full">0</span>
-            </div>
-            <div id="colPendiente" class="kanban-column p-4 space-y-3 overflow-y-auto max-h-[calc(100vh-280px)]">
-            </div>
+    <main class="p-4 lg:p-8 max-w-7xl mx-auto">
+        <div class="mb-8">
+            <h2 id="eventoActual" class="text-2xl font-display font-bold text-fg">Pedidos Recientes</h2>
         </div>
 
-        <!-- Preparando -->
-        <div class="bg-card border border-border rounded-2xl overflow-hidden">
-            <div class="bg-blue-500/10 border-b border-border p-4 flex items-center gap-3">
-                <div class="w-3 h-3 rounded-full bg-blue-500"></div>
-                <h2 class="font-semibold text-fg">Preparando</h2>
-                <span id="countPreparando" class="ml-auto bg-blue-500/20 text-blue-500 text-sm font-bold px-2 py-0.5 rounded-full">0</span>
+        <!-- Kanban Board -->
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Pendiente -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between bg-warning/10 p-3 rounded-xl border border-warning/20">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-warning"></span>
+                        <h3 class="font-bold text-warning text-sm uppercase tracking-wider">Pendientes</h3>
+                    </div>
+                    <span id="countPendiente" class="text-xs font-black bg-warning text-bg px-2 py-0.5 rounded-full">0</span>
+                </div>
+                <div id="colPendiente" class="space-y-4"></div>
             </div>
-            <div id="colPreparando" class="kanban-column p-4 space-y-3 overflow-y-auto max-h-[calc(100vh-280px)]">
+
+            <!-- Preparando -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between bg-blue-500/10 p-3 rounded-xl border border-blue-500/20">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                        <h3 class="font-bold text-blue-500 text-sm uppercase tracking-wider">Preparando</h3>
+                    </div>
+                    <span id="countPreparando" class="text-xs font-black bg-blue-500 text-white px-2 py-0.5 rounded-full">0</span>
+                </div>
+                <div id="colPreparando" class="space-y-4"></div>
+            </div>
+
+            <!-- Listo -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between bg-success/10 p-3 rounded-xl border border-success/20">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-success"></span>
+                        <h3 class="font-bold text-success text-sm uppercase tracking-wider">Listos</h3>
+                    </div>
+                    <span id="countListo" class="text-xs font-black bg-success text-white px-2 py-0.5 rounded-full">0</span>
+                </div>
+                <div id="colListo" class="space-y-4"></div>
             </div>
         </div>
+    </main>
 
-        <!-- Listos -->
-        <div class="bg-card border border-border rounded-2xl overflow-hidden">
-            <div class="bg-success/10 border-b border-border p-4 flex items-center gap-3">
-                <div class="w-3 h-3 rounded-full bg-success"></div>
-                <h2 class="font-semibold text-fg">Listos</h2>
-                <span id="countListo" class="ml-auto bg-success/20 text-success text-sm font-bold px-2 py-0.5 rounded-full">0</span>
-            </div>
-            <div id="colListo" class="kanban-column p-4 space-y-3 overflow-y-auto max-h-[calc(100vh-280px)]">
-            </div>
-        </div>
-    </div>
-
-    <!-- Audio for notifications -->
+    <!-- Notification Sound -->
     <audio id="notificationSound" preload="auto">
-        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleQsNamvG1spvGAU2hKfT5KlgCwM/Zbu/2NV3EQA8SrDa5KZoAwA5QZ/N1Nl8GgBFG2y/xtLAEQA7M12rvMrGcxIAOTVZpLPFx3EVD0IyS4abwb12Exk/Lj1UhZi4tXQfJTQuPFN+iZGvfy00KzxQe4SLqYI4KigsPFFzeYCOlI4wJigtOFVtf3t8j4o1JSgtOFZzfIB6inYpJyg0OlthcH1/jHcpJig1PV5kbH6BjXcpJig2P1xlaX6AjnYnJyg3QVxlamF9iHcnJyg3Q1xlaWB8h3YnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q=" type="audio/wav">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleQsNamvG1spvGAU2hKfT5KlgCwM/Zbu/2NV3EQA8SrDa5KZoAwA5QZ/N1Nl8GgBFG2y/xtLAEQA7M12rvMrGcxIAOTVZpLPFx3EVD0IyS4abwb12Exk/Lj1UhZi4tXQfJTQuPFN+iZGvfy00KzxQe4SLqYI4KigsPFFzeYCOlI4wJigtOFVtf3t8j4o1JSgtOFZzfIB6inYpJyg0OlthcH1/jHcpJig1PV5kbH6BjXcoJyg2P1xlaX6AjnYnJyg3QVxlamF9iHcnJyg3Q1xlaWB8h3YnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q1xlamF8hnYnJyg3Q1xlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3RFxlamF8hnYnJyg3Q=" type="audio/wav">
     </audio>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        // Supabase config
-        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-        let supabase = null;
-        if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        }
-        const DEMO_MODE = !supabase;
-
-        let currentUser = null;
-        let currentEmpresa = null;
-        let pedidos = [];
-        let eventos = [];
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            await checkAuth();
-            if (currentUser) {
-                await loadData();
-                setupRealtime();
-            }
-        });
-
-        async function checkAuth() {
-            const session = localStorage.getItem('barclick_session');
-            if (!session) {
-                window.location.href = 'index.html';
-                return;
-            }
-            const data = JSON.parse(session);
-            currentUser = data.user;
-            currentEmpresa = data.empresa;
-        }
-
-        async function loadData() {
-            if (DEMO_MODE) {
-                loadDemoData();
-                return;
-            }
-            // Load from Supabase...
-        }
-
-        function loadDemoData() {
-            eventos = [
-                { id: 'demo-event-1', nombre: 'BODA DE ERNESTO Y BLANCA' },
-                { id: 'demo-event-2', nombre: 'FIESTA CORPORATIVA' }
-            ];
-
-            const bebidasDemo = [
-                { id: 'b1', nombre: 'Mojito' },
-                { id: 'b2', nombre: 'Margarita' },
-                { id: 'b3', nombre: 'Pina Colada' },
-                { id: 'b4', nombre: 'Cerveza Corona' }
-            ];
-
-            pedidos = [
-                {
-                    id: 'p1',
-                    evento_id: 'demo-event-1',
-                    invitado_nombre: 'Juan Garcia',
-                    estado: 'pendiente',
-                    created_at: new Date().toISOString(),
-                    detalles: [
-                        { bebida: bebidasDemo[0], cantidad: 2 },
-                        { bebida: bebidasDemo[3], cantidad: 1 }
-                    ]
-                },
-                {
-                    id: 'p2',
-                    evento_id: 'demo-event-1',
-                    invitado_nombre: 'Maria Lopez',
-                    estado: 'preparando',
-                    created_at: new Date(Date.now() - 300000).toISOString(),
-                    detalles: [
-                        { bebida: bebidasDemo[1], cantidad: 1 }
-                    ]
-                },
-                {
-                    id: 'p3',
-                    evento_id: 'demo-event-1',
-                    invitado_nombre: 'Pedro Sanchez',
-                    estado: 'listo',
-                    created_at: new Date(Date.now() - 600000).toISOString(),
-                    detalles: [
-                        { bebida: bebidasDemo[2], cantidad: 3 }
-                    ]
-                }
-            ];
-
-            populateEventoFilter();
-            renderPedidos();
-        }
-
-        function populateEventoFilter() {
-            const select = document.getElementById('eventoFilter');
-            select.innerHTML = '<option value="">Todos los eventos</option>' +
-                eventos.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('');
-        }
-
-        function renderPedidos() {
-            const pendientes = pedidos.filter(p => p.estado === 'pendiente');
-            const preparando = pedidos.filter(p => p.estado === 'preparando');
-            const listos = pedidos.filter(p => p.estado === 'listo');
-
-            document.getElementById('countPendiente').textContent = pendientes.length;
-            document.getElementById('countPreparando').textContent = preparando.length;
-            document.getElementById('countListo').textContent = listos.length;
-
-            document.getElementById('colPendiente').innerHTML = pendientes.map(renderPedidoCard).join('') || '<p class="text-muted text-center py-8">No hay pedidos</p>';
-            document.getElementById('colPreparando').innerHTML = preparando.map(renderPedidoCard).join('') || '<p class="text-muted text-center py-8">No hay pedidos</p>';
-            document.getElementById('colListo').innerHTML = listos.map(renderPedidoCard).join('') || '<p class="text-muted text-center py-8">No hay pedidos</p>';
-        }
-
-        function renderPedidoCard(pedido) {
-            const time = new Date(pedido.created_at).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-            
-            let actionButton = '';
-            if (pedido.estado === 'pendiente') {
-                actionButton = `<button onclick="updateEstado('${pedido.id}', 'preparando')" class="btn-action w-full py-3 bg-blue-500 text-white rounded-xl font-semibold text-lg">Preparar</button>`;
-            } else if (pedido.estado === 'preparando') {
-                actionButton = `<button onclick="updateEstado('${pedido.id}', 'listo')" class="btn-action w-full py-3 bg-success text-white rounded-xl font-semibold text-lg">Marcar Listo</button>`;
-            } else {
-                actionButton = `<button onclick="updateEstado('${pedido.id}', 'entregado')" class="btn-action w-full py-3 bg-accent text-bg rounded-xl font-semibold text-lg">Entregado</button>`;
-            }
-
-            return `
-                <div class="order-card ${pedido.estado} bg-surface border border-border rounded-xl p-4">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-lg font-bold text-fg">${pedido.invitado_nombre}</span>
-                        <span class="text-sm text-muted">${time}</span>
-                    </div>
-                    <div class="space-y-2 mb-4">
-                        ${pedido.detalles.map(d => `
-                            <div class="flex items-center justify-between bg-card rounded-lg p-3">
-                                <span class="text-fg">${d.bebida.nombre}</span>
-                                <span class="text-accent font-bold text-lg">x${d.cantidad}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                    ${actionButton}
-                </div>
-            `;
-        }
-
-        function updateEstado(pedidoId, nuevoEstado) {
-            const pedido = pedidos.find(p => p.id === pedidoId);
-            if (!pedido) return;
-
-            if (nuevoEstado === 'entregado') {
-                pedidos = pedidos.filter(p => p.id !== pedidoId);
-            } else {
-                pedido.estado = nuevoEstado;
-            }
-            
-            renderPedidos();
-        }
-
-        function filterPedidos() {
-            const eventoId = document.getElementById('eventoFilter').value;
-            const evento = eventos.find(e => e.id === eventoId);
-            document.getElementById('eventoActual').textContent = evento ? evento.nombre : 'Todos los eventos';
-            renderPedidos();
-        }
-
-        function setupRealtime() {
-            if (DEMO_MODE) {
-                setInterval(simulateNewOrder, 20000);
-            }
-        }
-
-        function simulateNewOrder() {
-            if (Math.random() > 0.6) {
-                const names = ['Ana Torres', 'Luis Mendez', 'Carmen Ruiz', 'Jose Diaz'];
-                const bebidas = [
-                    { id: 'b1', nombre: 'Mojito' },
-                    { id: 'b2', nombre: 'Margarita' }
-                ];
-                
-                const newPedido = {
-                    id: 'p' + Date.now(),
-                    evento_id: eventos[0]?.id,
-                    invitado_nombre: names[Math.floor(Math.random() * names.length)],
-                    estado: 'pendiente',
-                    created_at: new Date().toISOString(),
-                    detalles: [
-                        { bebida: bebidas[Math.floor(Math.random() * bebidas.length)], cantidad: Math.floor(Math.random() * 2) + 1 }
-                    ]
-                };
-                
-                pedidos.unshift(newPedido);
-                playSound();
-                renderPedidos();
-            }
-        }
-
-        function playSound() {
-            const audio = document.getElementById('notificationSound');
-            audio.currentTime = 0;
-            audio.play().catch(() => {});
-        }
-
-        function logout() {
-            localStorage.removeItem('barclick_session');
-            window.location.href = 'index.html';
-        }
-    </script>
+    <script src="js/supabaseClient.js"></script>
+    <script src="js/bartender.js"></script>
 </body>
 </html>
