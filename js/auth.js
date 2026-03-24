@@ -96,14 +96,20 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             if (authState.loading) return;
 
-            const fullName = registerForm.fullName.value;
-            const companyName = registerForm.companyName.value;
-            const email = registerForm.email.value;
+            const fullName = registerForm.fullName.value.trim();
+            const companyName = registerForm.companyName.value.trim();
+            const email = registerForm.email.value.trim().toLowerCase();
             const password = registerForm.password.value;
+
+            console.log("Intentando registro con:", { email, fullName, companyName });
 
             setLoading(true, 'Creando cuenta...');
 
             try {
+                if (!window.supabaseClient) {
+                    throw new Error("El cliente de Supabase no está inicializado.");
+                }
+
                 const { data, error } = await window.supabaseClient.auth.signUp({
                     email,
                     password,
@@ -116,22 +122,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
-                if (error) throw error;
+                if (error) {
+                    console.error("Error detallado de Supabase Auth:", error);
+                    throw error;
+                }
 
-                if (data.user && data.session) {
-                    // En registro con auto-confirmación habilitada
-                    showMessage('success', 'Cuenta creada exitosamente. Redirigiendo...');
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1500);
-                } else {
-                    // Si requiere confirmación de email
-                    showMessage('success', 'Revisa tu email para confirmar tu cuenta.');
+                if (data.user && (data.session || data.user.identities?.length > 0)) {
+                    // Cuenta creada (con o sin sesión dependiendo de si requiere confirmación)
+                    if (data.session) {
+                        showMessage('success', 'Cuenta creada exitosamente. Redirigiendo...');
+                        setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+                    } else {
+                        showMessage('success', 'Cuenta creada. Revisa tu email para confirmarla (si está activo).');
+                    }
+                } else if (data.user && data.user.identities?.length === 0) {
+                    throw new Error("Este correo ya está registrado.");
                 }
 
             } catch (err) {
                 showMessage('error', err.message);
-                console.error('Register error:', err);
+                console.error('Register error context:', err);
             } finally {
                 setLoading(false);
             }
