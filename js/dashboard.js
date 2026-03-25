@@ -417,9 +417,9 @@ window.saveEvento = async (e) => {
                 empresa_id: currentEmpresa.id,
                 nombre: form.nombre.value.toUpperCase(),
                 fecha: form.fecha.value,
-                hora_inicio: form.horaInicio.value || null,
-                hora_fin: form.horaFin.value || null,
-                ubicacion: form.ubicacion.value || null,
+                hora_inicio: form.horaInicio?.value || null,
+                hora_fin: form.horaFin?.value || null,
+                ubicacion: form.ubicacion?.value || null,
                 codigo_qr: codigoQr
             }]);
 

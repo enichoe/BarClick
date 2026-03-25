@@ -240,9 +240,17 @@
     <div id="eventoModal" class="fixed inset-0 bg-bg/90 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-card border border-border rounded-2xl p-6 w-full max-w-md">
             <form id="eventoForm" onsubmit="saveEvento(event)" class="space-y-4">
-                <input type="text" name="nombre" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Nombre del Evento">
+                <input type="text" name="nombre" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Nombre completo">
                 <input type="date" name="fecha" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg">
-                <button type="submit" class="w-full btn-primary py-3 rounded-xl text-bg font-semibold">Crear Evento</button>
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="time" name="horaInicio" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg">
+                    <input type="time" name="horaFin" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg">
+                </div>
+                <input type="text" name="ubicacion" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Ubicación">
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeModal('eventoModal')" class="flex-1 px-6 py-3 bg-surface border border-border rounded-xl text-fg">Cancelar</button>
+                    <button type="submit" class="flex-1 btn-primary py-3 rounded-xl text-bg font-semibold">Crear Evento</button>
+                </div>
             </form>
         </div>
     </div>
