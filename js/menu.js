@@ -46,17 +46,17 @@ async function initMenu(code) {
         currentEvento = evento;
         currentEmpresa = evento.empresas;
         
-        // Cargar bebidas asociadas a este evento (via tabla pivot)
-        const { data: eventoBebidas, error: bevError } = await window.supabaseClient
-            .from('evento_bebidas')
-            .select('bebidas(*)')
-            .eq('evento_id', evento.id)
-            .eq('disponible', true);
+        // Cargar bebidas asociadas a la empresa del evento
+        const { data: bData, error: bevError } = await window.supabaseClient
+            .from('bebidas')
+            .select('*')
+            .eq('empresa_id', currentEmpresa.id)
+            .eq('activo', true);
             
         if (bevError) throw bevError;
         
         // Aplanar los datos para facilitar el manejo
-        bebidas = eventoBebidas.map(eb => eb.bebidas).filter(b => b.activo);
+        bebidas = bData;
         
         // Actualizar UI básica
         document.getElementById('barName').textContent = currentEmpresa.nombre;
