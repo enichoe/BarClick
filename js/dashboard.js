@@ -647,9 +647,11 @@ window.showQR = (eventoId) => {
     const evento = eventos.find(e => e.id === eventoId);
     if (!evento) return;
     
-    document.getElementById('qrEventoName').textContent = evento.nombre;
+    const elName = document.getElementById('qrEventoName');
+    if (elName) elName.textContent = evento.nombre;
+    
     const qrContainer = document.getElementById('qrCode');
-    qrContainer.innerHTML = '';
+    if (qrContainer) qrContainer.innerHTML = '';
     
     const baseUrl = window.location.href.split('/').slice(0, -1).join('/');
     const qrUrl = `${baseUrl}/menu.html?evento=${evento.codigo_qr}`;
