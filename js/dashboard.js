@@ -530,10 +530,17 @@ async function uploadToStorage(file, folder, id) {
     const { data, error } = await window.supabaseClient.storage
         .from('barclick')
         .upload(fileName, file, {
-            upsert: true
+            upsert: true,
+            contentType: file.type // Asegura que el servidor reconozca el tipo de archivo
         });
 
-    if (error) throw error;
+    if (error) {
+        console.error("Storage Error:", error);
+        if (error.message.includes('not found')) {
+            throw new Error("El bucket 'barclick' no existe en Supabase Storage o no es público.");
+        }
+        throw error;
+    }
 
     const { data: { publicUrl } } = window.supabaseClient.storage
         .from('barclick')
