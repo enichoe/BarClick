@@ -62,10 +62,10 @@ function updateUserUI() {
     // Cargar perfil en el formulario
     const form = document.getElementById('perfilForm');
     if (form) {
-        form.nombre.value = currentEmpresa.nombre || '';
-        form.telefono.value = currentEmpresa.telefono || '';
-        form.instagram.value = currentEmpresa.instagram || '';
-        form.facebook.value = currentEmpresa.facebook || '';
+        if (form.nombre) form.nombre.value = currentEmpresa.nombre || '';
+        if (form.telefono) form.telefono.value = currentEmpresa.telefono || '';
+        if (form.instagram) form.instagram.value = currentEmpresa.instagram || '';
+        if (form.facebook) form.facebook.value = currentEmpresa.facebook || '';
         
         if (currentEmpresa.logo_url) {
             const preview = document.getElementById('logoPreview');
@@ -533,6 +533,24 @@ async function uploadToStorage(file, folder, id) {
 
     return publicUrl;
 }
+
+// Función para manejar la previsualización del logo
+window.handleLogoUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const preview = document.getElementById('logoPreview');
+        const placeholder = document.getElementById('logoPlaceholder');
+        if (preview && placeholder) {
+            preview.src = e.target.result;
+            preview.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+        }
+    };
+    reader.readAsDataURL(file);
+};
 
 // =============================================
 // REALTIME
