@@ -247,6 +247,52 @@
         </div>
     </div>
 
+    <!-- Bebida Modal -->
+    <div id="bebidaModal" class="fixed inset-0 bg-bg/90 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-card border border-border rounded-2xl p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold font-display text-fg mb-4">Nueva Bebida</h3>
+            <form id="bebidaForm" onsubmit="saveBebida(event)" class="space-y-4">
+                <div class="flex flex-col items-center gap-4 mb-4">
+                    <div class="w-24 h-24 rounded-2xl bg-surface border-2 border-dashed border-border flex items-center justify-center overflow-hidden cursor-pointer" onclick="document.getElementById('bebidaImgInput').click()">
+                        <img id="bebidaImgPreview" src="" alt="" class="w-full h-full object-cover hidden">
+                        <svg class="w-8 h-8 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    </div>
+                    <input type="file" id="bebidaImgInput" accept="image/*" class="hidden">
+                    <p class="text-xs text-muted">Click para subir imagen</p>
+                </div>
+                <input type="text" name="nombre" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Nombre de la bebida">
+                <textarea name="descripcion" class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Descripción (opcional)"></textarea>
+                <select name="categoria" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg">
+                    <option value="">Seleccionar Categoría</option>
+                    <option value="Cocktails">Cocktails</option>
+                    <option value="Vinos">Vinos</option>
+                    <option value="Cervezas">Cervezas</option>
+                    <option value="Sin Alcohol">Sin Alcohol</option>
+                </select>
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeModal('bebidaModal')" class="flex-1 px-6 py-3 bg-surface border border-border rounded-xl text-fg">Cancelar</button>
+                    <button type="submit" class="flex-1 btn-primary py-3 rounded-xl text-bg font-semibold">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bartender Modal -->
+    <div id="bartenderModal" class="fixed inset-0 bg-bg/90 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-card border border-border rounded-2xl p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold font-display text-fg mb-4">Nuevo Bartender</h3>
+            <p class="text-sm text-muted mb-4">Añade a un miembro del equipo para gestionar los pedidos.</p>
+            <form id="bartenderForm" class="space-y-4">
+                <input type="text" name="nombre" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Nombre completo">
+                <input type="email" name="email" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-fg" placeholder="Correo electrónico">
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeModal('bartenderModal')" class="flex-1 px-6 py-3 bg-surface border border-border rounded-xl text-fg">Cancelar</button>
+                    <button type="submit" class="flex-1 btn-primary py-3 rounded-xl text-bg font-semibold">Agregar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="qrModal" class="fixed inset-0 bg-bg/90 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-card border border-border rounded-2xl p-6 w-full max-w-sm text-center">
             <div id="qrCode" class="bg-white p-4 rounded-xl inline-block mb-4"></div>
