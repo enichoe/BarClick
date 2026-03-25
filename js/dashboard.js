@@ -41,6 +41,11 @@ async function checkAuth() {
         return null;
     }
 
+    if (!userData.empresas) {
+        console.error('El usuario no tiene una empresa asociada.');
+        return null;
+    }
+
     currentUser = userData;
     currentEmpresa = userData.empresas;
 

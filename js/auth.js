@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (userError && (userError.code === 'PGRST116' || userError.status === 406)) {
                     console.warn("Perfil no encontrado en 'usuarios'. Intentando auto-creación...");
                     
-                    const meta = data.user.user_metadata;
+                    const meta = data.user.user_metadata || {};
                     
                     // 1. Buscar si ya existe una empresa con ese nombre o crear una genérica
                     let empresaId;
@@ -83,13 +83,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (empData && empData.length > 0) {
                         empresaId = empData[0].id;
                     } else {
-                        const { data: newEmp } = await window.supabaseClient
+                        const { data: newEmp, error: empError } = await window.supabaseClient
                             .from('empresas')
                             .insert([{ 
                                 nombre: meta.company_name || 'Mi Negocio',
                                 slug: 'bar-' + Math.random().toString(36).substring(7)
                             }])
                             .select().single();
+                        
+                        if (empError) throw new Error("No se pudo crear la empresa: " + empError.message);
+                        if (!newEmp) throw new Error("Error inesperado al crear la empresa (null).");
                         empresaId = newEmp.id;
                     }
 
@@ -106,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         .select('*, empresas(*)').single();
                     
                     if (createError) throw createError;
+                    if (!newUser) throw new Error("Error inesperado al crear el perfil (null).");
                     userData = newUser;
                 } else if (userError) {
                     throw userError;

@@ -2,8 +2,8 @@
 -- BARCLICK DATABASE SCHEMA
 -- =============================================
 
--- Habilitar Row Level Security
-ALTER DATABASE postgres SET "app.jwt_secret" TO 'your-jwt-secret';
+-- Habilitar Row Level Security (No requiere configurar jwt_secret manualmente en Supabase)
+
 
 -- =============================================
 -- TABLA: empresas
@@ -117,7 +117,7 @@ CREATE INDEX idx_pedidos_created ON pedidos(created_at DESC);
 -- ROW LEVEL SECURITY POLICIES
 -- =============================================
 
--- Empresas: solo admin puede ver/editar su empresa
+-- Empresas: acceso por pertenencia a la empresa
 ALTER TABLE empresas ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Usuarios pueden ver su propia empresa"
@@ -132,14 +132,30 @@ CREATE POLICY "Admin puede actualizar su empresa"
         SELECT empresa_id FROM usuarios WHERE id = auth.uid() AND rol = 'admin'
     ));
 
--- Usuarios
+CREATE POLICY "Permitir crear empresa inicial"
+    ON empresas FOR INSERT
+    WITH CHECK (auth.role() = 'authenticated');
+
+-- Función auxiliar para evitar recursión en RLS
+CREATE OR REPLACE FUNCTION get_my_empresa_id() 
+RETURNS UUID AS $$
+  SELECT empresa_id FROM public.usuarios WHERE id = auth.uid();
+$$ LANGUAGE sql STABLE SECURITY DEFINER;
+
+-- Usuarios: acceso al propio perfil y a los de la misma empresa
 ALTER TABLE usuarios ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Usuarios pueden ver usuarios de su empresa"
+CREATE POLICY "Usuarios pueden ver su propio perfil"
     ON usuarios FOR SELECT
-    USING (empresa_id IN (
-        SELECT empresa_id FROM usuarios WHERE id = auth.uid()
-    ));
+    USING (id = auth.uid());
+
+CREATE POLICY "Usuarios pueden ver otros de su misma empresa"
+    ON usuarios FOR SELECT
+    USING (empresa_id = get_my_empresa_id());
+
+CREATE POLICY "Permitir crear perfil propio"
+    ON usuarios FOR INSERT
+    WITH CHECK (id = auth.uid());
 
 -- Eventos
 ALTER TABLE eventos ENABLE ROW LEVEL SECURITY;
