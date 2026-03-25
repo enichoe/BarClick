@@ -658,6 +658,10 @@ window.showQR = (eventoId) => {
     
     // Usar la librería qrcode.min.js que ya está en el HTML
     const canvas = document.createElement('canvas');
+    if (typeof QRCode === 'undefined') {
+        alert("Error: La librería de QR no se ha cargado.");
+        return;
+    }
     QRCode.toCanvas(canvas, qrUrl, {
         width: 256,
         margin: 2,
