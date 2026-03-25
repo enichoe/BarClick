@@ -59,31 +59,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (error) throw error;
 
-                // Cargar datos extra del usuario (empresa_id, rol)
-                const { data: userData, error: userError } = await window.supabaseClient
+                // Intentar Cargar datos extra del usuario (empresa_id, rol)
+                let { data: userData, error: userError } = await window.supabaseClient
                     .from('usuarios')
                     .select('*, empresas(*)')
                     .eq('id', data.user.id)
                     .single();
 
-                if (userError) throw userError;
+                // --- LÓGICA FAIL-SAFE: Si el perfil no existe en DB, lo intentamos crear ---
+                if (userError && (userError.code === 'PGRST116' || userError.status === 406)) {
+                    console.warn("Perfil no encontrado en 'usuarios'. Intentando auto-creación...");
+                    
+                    const meta = data.user.user_metadata;
+                    
+                    // 1. Buscar si ya existe una empresa con ese nombre o crear una genérica
+                    let empresaId;
+                    const { data: empData } = await window.supabaseClient
+                        .from('empresas')
+                        .select('id')
+                        .eq('nombre', meta.company_name || 'Mi Negocio')
+                        .limit(1);
+                    
+                    if (empData && empData.length > 0) {
+                        empresaId = empData[0].id;
+                    } else {
+                        const { data: newEmp } = await window.supabaseClient
+                            .from('empresas')
+                            .insert([{ 
+                                nombre: meta.company_name || 'Mi Negocio',
+                                slug: 'bar-' + Math.random().toString(36).substring(7)
+                            }])
+                            .select().single();
+                        empresaId = newEmp.id;
+                    }
 
-                // Guardar en sesión local (opcional, Supabase ya lo hace pero para coherencia con dashboard)
+                    // 2. Crear el usuario en la tabla pública
+                    const { data: newUser, error: createError } = await window.supabaseClient
+                        .from('usuarios')
+                        .insert([{
+                            id: data.user.id,
+                            empresa_id: empresaId,
+                            nombre: meta.full_name || 'Usuario',
+                            email: data.user.email,
+                            rol: 'admin'
+                        }])
+                        .select('*, empresas(*)').single();
+                    
+                    if (createError) throw createError;
+                    userData = newUser;
+                } else if (userError) {
+                    throw userError;
+                }
+
+                // Guardar en sesión local
                 localStorage.setItem('barclick_session', JSON.stringify({
                     user: userData,
                     empresa: userData.empresas
                 }));
 
                 // Redirección por rol
-                if (userData.rol === 'admin') {
-                    window.location.href = 'dashboard.html';
-                } else {
-                    window.location.href = 'bartender.html';
-                }
+                window.location.href = userData.rol === 'admin' ? 'dashboard.html' : 'bartender.html';
 
             } catch (err) {
-                showMessage('error', err.message);
-                console.error('Login error:', err);
+                showMessage('error', "Error de acceso: " + err.message);
+                console.error('Login error context:', err);
             } finally {
                 setLoading(false);
             }
