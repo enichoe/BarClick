@@ -278,12 +278,12 @@ window.submitPedido = async (e) => {
         if (dError) throw dError;
         
         // 3. Notificación Personalizada vía WhatsApp (Opcional)
-        if (currentEmpresa.whatsapp) {
-            const phoneNumber = currentEmpresa.whatsapp.replace(/\D/g, ''); // Limpiar el número
+        const waNumber = (currentEmpresa.whatsapp || currentEmpresa.telefono || '').replace(/\D/g, '');
+        if (waNumber) {
             const orderList = cart.map(item => `- ${item.nombre} (x${item.cantidad})`).join('%0A');
             const message = `*NUEVO PEDIDO - BarClick*%0A%0A*Cliente:* ${form.nombre.value.trim()}%0A*Ítems:*%0A${orderList}%0A%0A_Favor preparar el pedido_`;
             
-            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+            const whatsappUrl = `https://wa.me/${waNumber}?text=${message}`;
             window.open(whatsappUrl, '_blank');
         }
 

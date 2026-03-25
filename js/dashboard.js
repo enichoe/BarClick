@@ -64,6 +64,7 @@ function updateUserUI() {
     if (form) {
         if (form.nombre) form.nombre.value = currentEmpresa.nombre || '';
         if (form.telefono) form.telefono.value = currentEmpresa.telefono || '';
+        if (form.whatsapp) form.whatsapp.value = currentEmpresa.whatsapp || '';
         if (form.instagram) form.instagram.value = currentEmpresa.instagram || '';
         if (form.facebook) form.facebook.value = currentEmpresa.facebook || '';
         
@@ -384,6 +385,7 @@ window.savePerfil = async (e) => {
             .update({
                 nombre: form.nombre.value,
                 telefono: form.telefono.value,
+                whatsapp: form.whatsapp.value,
                 instagram: form.instagram.value,
                 facebook: form.facebook.value,
                 logo_url
