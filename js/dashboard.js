@@ -282,9 +282,12 @@ function renderPedidos() {
     const listos = pedidos.filter(p => p.estado === 'listo');
     
     // Actualizar contadores
-    document.getElementById('countPendiente').textContent = pendientes.length;
-    document.getElementById('countPreparando').textContent = preparando.length;
-    document.getElementById('countListo').textContent = listos.length;
+    const countPendiente = document.getElementById('countPendiente');
+    const countPreparando = document.getElementById('countPreparando');
+    const countListo = document.getElementById('countListo');
+    if (countPendiente) countPendiente.textContent = pendientes.length;
+    if (countPreparando) countPreparando.textContent = preparando.length;
+    if (countListo) countListo.textContent = listos.length;
     
     // Renderizar cada columna
     const renderCol = (list) => list.map(p => renderPedidoCard(p)).join('') || '<p class="text-muted text-center py-8 text-sm">Sin pedidos</p>';
@@ -348,10 +351,15 @@ function updateStats() {
     const listos = pedidos.filter(p => p.estado === 'listo').length;
     const total = pedidos.length;
     
-    document.getElementById('statPendientes').textContent = pendientes;
-    document.getElementById('statPreparando').textContent = preparando;
-    document.getElementById('statListos').textContent = listos;
-    document.getElementById('statTotal').textContent = total;
+    const elPendientes = document.getElementById('statPendientes');
+    const elPreparando = document.getElementById('statPreparando');
+    const elListos = document.getElementById('statListos');
+    const elTotal = document.getElementById('statTotal');
+
+    if (elPendientes) elPendientes.textContent = pendientes;
+    if (elPreparando) elPreparando.textContent = preparando;
+    if (elListos) elListos.textContent = listos;
+    if (elTotal) elTotal.textContent = total;
 }
 
 // =============================================
